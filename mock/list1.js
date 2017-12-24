@@ -1,40 +1,40 @@
 var result  ={
   noProvinces:[{
-    provinceName: "p1 ",
-    check:false,
+    provinceName: "province1 ",
+    check:true,
     noServiceCitys: [{
       cityName: 'city1',
       check: true,
       noServiceDistricts: [{
-        districtName: '云霄县',
+        districtName: 'districtName1',
         check:true,
       }]
     }]
   }, {
-    provinceName: "p 2 ",
-    check:false,
+    provinceName: "province2 ",
+    check:true,
     noServiceCitys: [{
-      cityName: ' ',
+      cityName: 'city2',
       check: true,
       noServiceDistricts: [{
-        districtName: '云霄县',
+        districtName: 'districtName2',
         check:true
       }]
     }]
   }, {
-    provinceName: "p 3",
-    check:false,
+    provinceName: "province3",
+    check:true,
     noServiceCitys: [{
-      cityName: ' ',
+      cityName: 'city3',
       check: true,
       noServiceDistricts: [{
-        districtName: '云霄县',
+        districtName: 'districtName3',
         check:true
       }]
     }]
   }
 ],
-check:false
+check:true
 }
 
 module.exports = result;

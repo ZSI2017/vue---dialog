@@ -138,7 +138,7 @@ export default {
           }
 
           // alert(index1)
-          this.li1Click('event',index1,newData.noProvinces[index1]);
+          // this.li1Click('event',index1,newData.noProvinces[index1]);
         if(typeof newData.noProvinces[index1] !== "undefined"){
             for(let k =0;k<newData.noProvinces[index1].noServiceCitys.length;k++) {
                  console.log(newData.noProvinces[index1].noServiceCitys[k].check||newData.noProvinces[index1].noServiceCitys[k].noServiceDistricts.some(function(im){return im.check>0}))
@@ -420,8 +420,7 @@ export default {
             //  this.checkedData[index].citys= [];
           }
     }
-      // console.log(this.checkedData);
-      // alert(index)
+
       this.list2 = this.sourceData.noProvinces[index].noServiceCitys;
       this.$nextTick(function(){
         this.showLi = true;
@@ -438,7 +437,7 @@ export default {
                          break;
                     }
             }
-            this.li1Click2('event',this.sourceData.noProvinces[index].noServiceCitys[index2],index2);
+            // this.li1Click2('event',this.sourceData.noProvinces[index].noServiceCitys[index2],index2);
           }
       }
     },
