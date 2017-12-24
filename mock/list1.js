@@ -1,40 +1,28 @@
-var result  ={
-  noProvinces:[{
-    provinceName: "province1 ",
-    check:true,
-    noServiceCitys: [{
-      cityName: 'city1',
-      check: true,
-      noServiceDistricts: [{
-        districtName: 'districtName1',
-        check:true,
+
+var provinces = [];
+var  Mock =require("mockjs");
+for(var i =0;i<20;i++){
+  provinces.push(
+    Mock.mock({
+      provinceName: Mock.Random.province(),
+      check:Mock.Random.boolean(),
+      noServiceCitys: [{
+        cityName: 'city'+Mock.Random.integer(),
+        check: Mock.Random.boolean(),
+        noServiceDistricts: [{
+          districtName: 'districtName'+Mock.Random.integer(),
+          check:Mock.Random.boolean(),
+        }]
       }]
-    }]
-  }, {
-    provinceName: "province2 ",
-    check:true,
-    noServiceCitys: [{
-      cityName: 'city2',
-      check: true,
-      noServiceDistricts: [{
-        districtName: 'districtName2',
-        check:true
-      }]
-    }]
-  }, {
-    provinceName: "province3",
-    check:true,
-    noServiceCitys: [{
-      cityName: 'city3',
-      check: true,
-      noServiceDistricts: [{
-        districtName: 'districtName3',
-        check:true
-      }]
-    }]
-  }
-],
-check:true
+    })
+  )
+
 }
+
+var result  ={
+  noProvinces:provinces,
+  check:true
+}
+
 
 module.exports = result;

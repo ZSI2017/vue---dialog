@@ -121,9 +121,6 @@ export default {
       // console.log(oldData);
     },
     sourceData:function(newData,oldData) {
-       console.log(newData);
-       console.log(newData+"++++++++++++++++"+oldData);
-       console.log(oldData);
         this.checkedData = newData.noProvinces;
        if(!this.onlyRead) {
          this.li1Click('event',0,newData.noProvinces[0]);
@@ -138,7 +135,7 @@ export default {
           }
 
           // alert(index1)
-          // this.li1Click('event',index1,newData.noProvinces[index1]);
+          this.li1Click('event',index1,newData.noProvinces[index1]);
         if(typeof newData.noProvinces[index1] !== "undefined"){
             for(let k =0;k<newData.noProvinces[index1].noServiceCitys.length;k++) {
                  console.log(newData.noProvinces[index1].noServiceCitys[k].check||newData.noProvinces[index1].noServiceCitys[k].noServiceDistricts.some(function(im){return im.check>0}))
@@ -147,7 +144,7 @@ export default {
                          break;
                     }
             }
-            // this.li1Click2('event',newData.noProvinces[index1].noServiceCitys[index2],index2);
+            this.li1Click2('event',newData.noProvinces[index1].noServiceCitys[index2],index2);
           }
        }
 
@@ -437,7 +434,8 @@ export default {
                          break;
                     }
             }
-            // this.li1Click2('event',this.sourceData.noProvinces[index].noServiceCitys[index2],index2);
+            console.log(index+":999999999999:"+index2);
+            this.li1Click2('event',this.sourceData.noProvinces[index].noServiceCitys[index2],index2);
           }
       }
     },

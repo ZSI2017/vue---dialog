@@ -17,8 +17,8 @@
     <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
     <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
   </ul>
-  <h2 @click = "toggleSeeDialog">点击打开弹窗-查看模式</h2>
-  <h2 @click = "toggleEditDialog">点击打开弹窗-编辑模式</h2>
+  <h2 @click ="toggleSeeDialog">点击打开弹窗-查看模式</h2>
+  <h2 @click ="toggleEditDialog">点击打开弹窗-编辑模式</h2>
 
   <config-checkbox
       :visible="dialogConfigVisible"
@@ -58,7 +58,12 @@ export default {
     changeConfigVisible(flag){
         this.dialogConfigVisible = flag;
     },
-    toggleDialog(){
+    toggleSeeDialog(){
+      this.isCheckServer = true;
+       this.dialogConfigVisible = !this.dialogConfigVisible;
+    },
+    toggleEditDialog(){
+      this.isCheckServer = false;
        this.dialogConfigVisible = !this.dialogConfigVisible;
     }
 
