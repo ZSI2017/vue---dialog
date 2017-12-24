@@ -1,30 +1,14 @@
 # vue-dialog
 
-> A Vue.js project
+> A Vue.js
+> 三级地址联动选择对话款
 
-## Build Setup
 
-``` bash
-# install dependencies
-npm install
+-  [json-server](https://github.com/typicode/json-server) 伪造后台接口服务
+-  [mock.js](http://mockjs.com/) 伪造数据
+-  [Element-ui](http://element.eleme.io/#/zh-CN/component/message-box) 样式渲染
 
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
-```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+使用说明:
+   1, 全局安装`json-server`插件   `npm i json-server -g`
+   2, `cd mock` 目录，启动服务  `json-server -w mock.js`
+   3, `cd ..` 在 最外层目录， `npm run dev` 启动
