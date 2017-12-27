@@ -19,7 +19,7 @@ for(var i =0;i<20;i++){
     };
      for(var k = 0;k<5;k++){
        var noServiceDistrictsArr = {
-          districtName:k+"--districtName "+cityNumber,
+          districtName:k+" district "+cityNumber,
           check:1,
        };
        noServiceCitysArr.noServiceDistricts.push(noServiceDistrictsArr);

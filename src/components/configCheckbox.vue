@@ -433,7 +433,6 @@ export default {
             }
           }
           this.checkCity = tempArr;
-          console.log(this.checkCity);
         } else {
           this.checkCity = [];
           //  this.checkedData[index] =[];
@@ -456,14 +455,10 @@ export default {
             if (this.sourceData.noProvinces[index].noServiceCitys[k].check || this.sourceData.noProvinces[index].noServiceCitys[k].noServiceDistricts.some(function(im) {
                 return im.check > 0
               })) {
-              console.log("kkkkkkk" + k)
-
               index2 = k;
-
               break;
             }
           }
-          console.log(index + ":999999999999:" + index2);
           this.li1Click2('event', this.sourceData.noProvinces[index].noServiceCitys[index2], index2);
         }
       }
