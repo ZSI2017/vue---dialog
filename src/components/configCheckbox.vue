@@ -315,9 +315,7 @@ export default {
       if (this.onlyRead) return;
       let oldCheck = this.checkedData[this.li0].noServiceCitys[this.li1].noServiceDistricts[index].check
 
-      console.log(oldCheck + " oldCheck " + event.target.checked + "index:  " + index);
       this.checkedData[this.li0].noServiceCitys[this.li1].noServiceDistricts[index].check = event.target.checked ? (oldCheck + sendOrRec) : (oldCheck - sendOrRec);
-      console.log(this.checkedData[this.li0].noServiceCitys[this.li1].noServiceDistricts[index].check);
     },
     // 区县选择 多选框
     handleDistricChange() {
