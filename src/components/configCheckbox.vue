@@ -510,28 +510,35 @@ export default {
     handleSave() {
       this.visible = false;
       this.fullscreenLoading = true;
-      let url = "/api/noService/update"
+      // let url = "/api/noService/update"
       console.log(this.checkedData);
-      this.$http.post(url, {
-        "noService": {
-          noProvinces: this.checkedData
-        },
-        "data": {
-          "logisMerchId": this.logisMerchId
-        }
-      }, (result) => {
+      setTimeout(() => {
         this.fullscreenLoading = false;
         this.$message({
           message: '保存成功',
           type: 'success'
         });
-      }, (error) => {
-        this.fullscreenLoading = false;
-        this.$message({
-          message: '保存失败',
-          type: 'warning'
-        })
-      })
+      }, 1000)
+      // this.$http.post(url, {
+      //   "noService": {
+      //     noProvinces: this.checkedData
+      //   },
+      //   "data": {
+      //     "logisMerchId": this.logisMerchId
+      //   }
+      // }, (result) => {
+      //   this.fullscreenLoading = false;
+      //   this.$message({
+      //     message: '保存成功',
+      //     type: 'success'
+      //   });
+      // }, (error) => {
+      //   this.fullscreenLoading = false;
+      //   this.$message({
+      //     message: '保存失败',
+      //     type: 'warning'
+      //   })
+      // })
     },
     handleCancel() {
       this.visible = false;
