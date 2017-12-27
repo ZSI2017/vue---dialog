@@ -14,13 +14,13 @@ for(var i =0;i<20;i++){
     var cityNumber = Mock.Random.integer(1,100)*j
     var noServiceCitysArr = {
       cityName:provvinceNumber+ "-city "+ cityNumber,
-      check:0,
+      check:1,
       noServiceDistricts:[]
     };
      for(var k = 0;k<5;k++){
        var noServiceDistrictsArr = {
-          districtName:"districtName "+cityNumber,
-          check:0,
+          districtName:k+"--districtName "+cityNumber,
+          check:1,
        };
        noServiceCitysArr.noServiceDistricts.push(noServiceDistrictsArr);
      }

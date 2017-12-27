@@ -121,6 +121,7 @@ export default {
       // console.log(oldData);
     },
     sourceData: function(newData, oldData) {
+      console.log(newData + "--------------" + oldData);
       this.checkedData = newData.noProvinces;
       if (!this.onlyRead) {
         this.li1Click('event', 0, newData.noProvinces[0]);
@@ -133,8 +134,6 @@ export default {
             break;
           }
         }
-
-        // alert(index1)
         this.li1Click('event', index1, newData.noProvinces[index1]);
         if (typeof newData.noProvinces[index1] !== "undefined") {
           for (let k = 0; k < newData.noProvinces[index1].noServiceCitys.length; k++) {
@@ -159,7 +158,6 @@ export default {
     // 点击全选
     handleCheckAllChange(index, item, event, sendOrRec) {
       if (this.onlyRead) return;
-      // alert(index);
       // this.checkedData[this.li0].citys = this.checkCity;
       // console.log(this.checkCitysData);
       // let tempCitysArr = [];
@@ -314,10 +312,12 @@ export default {
       //   ]
     },
     handleCheckbox(index, event, sendOrRec) {
-
       if (this.onlyRead) return;
       let oldCheck = this.checkedData[this.li0].noServiceCitys[this.li1].noServiceDistricts[index].check
+
+      console.log(oldCheck + " oldCheck " + event.target.checked + "index:  " + index);
       this.checkedData[this.li0].noServiceCitys[this.li1].noServiceDistricts[index].check = event.target.checked ? (oldCheck + sendOrRec) : (oldCheck - sendOrRec);
+      console.log(this.checkedData[this.li0].noServiceCitys[this.li1].noServiceDistricts[index].check);
     },
     // 区县选择 多选框
     handleDistricChange() {
@@ -335,6 +335,7 @@ export default {
       //     check:1,
       //   })
       // }
+
       // this.checkedData[this.li0].noServiceCitys[this.li1].noServiceDistricts = tempdistrictName;
       // 将原始数据和 动态生成的已勾选数据    noServiceDistricts 长度 的 进行比较
       let checkedDataDistrictNameSedLength = 0,
@@ -451,10 +452,14 @@ export default {
         let index2;
         if (typeof this.sourceData.noProvinces[index] !== "undefined") {
           for (let k = 0; k < this.sourceData.noProvinces[index].noServiceCitys.length; k++) {
+            console.log(" k " + this.sourceData.noProvinces[index].noServiceCitys[k].check);
             if (this.sourceData.noProvinces[index].noServiceCitys[k].check || this.sourceData.noProvinces[index].noServiceCitys[k].noServiceDistricts.some(function(im) {
                 return im.check > 0
               })) {
+              console.log("kkkkkkk" + k)
+
               index2 = k;
+
               break;
             }
           }

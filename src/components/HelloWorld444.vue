@@ -3,6 +3,10 @@
   <span class="demonstration">默认</span>
   <el-date-picker v-model="value3" @change="handleChange" type="datetimerange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
   </el-date-picker>
+
+  <span class="demonstration">周</span>
+  <el-date-picker v-model="value4" type="week" @change="handWekChange" format="yyyy 第 WW 周" placeholder="选择周">
+  </el-date-picker>
 </div>
 </template>
 
@@ -38,12 +42,16 @@ export default {
         }]
       },
       value3: [new Date(2000, 10, 10, 10, 10), new Date(2000, 10, 11, 10, 10)],
-      value4: ''
+      value4: new Date(2000, 10, 10, 10, 10)
     };
   },
   methods: {
     handleChange(value) {
       console.log(value);
+
+    },
+    handWekChange(value) {
+      console.log(value)
 
     }
   }

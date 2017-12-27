@@ -43,24 +43,26 @@ export default {
   mounted() {
     console.log(this.$http)
     var _this = this;
-    this.$http.get('/list1', function(data) {
-      _this.result = data.data;
 
-    })
   },
   methods: {
     changeConfigVisible(flag) {
       this.dialogConfigVisible = flag;
     },
     toggleSeeDialog() {
-      this.isCheckServer = true;
-      this.dialogConfigVisible = !this.dialogConfigVisible;
+      this.$http.get('/list1', (data) => {
+        this.result = data.data;
+        this.isCheckServer = true;
+        this.dialogConfigVisible = !this.dialogConfigVisible;
+      })
     },
     toggleEditDialog() {
-      this.isCheckServer = false;
-      this.dialogConfigVisible = !this.dialogConfigVisible;
+      this.$http.get("/list1", (data) => {
+        this.result = data.data;
+        this.isCheckServer = false;
+        this.dialogConfigVisible = !this.dialogConfigVisible;
+      })
     }
-
   }
 }
 </script>
