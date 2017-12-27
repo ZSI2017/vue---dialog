@@ -160,77 +160,35 @@ export default {
      *  并且改变 checkedDistric 数组中的的区县内容，相应的全部加入，活着 设置为空，
      *  @method handleCheckAllChange
      *  @param  {Number}             index     获取到点击全选的是哪一项
-     *  @param  {Object}             item      保存点击城市对应的整个对象数据，
+     *  @param  {Object}             item      保存点击城市对应的整个对象数据，通过v-for循环中获取到的 item 变量
      *  @param  {Object}             event     获取到原生的事件对象，用来判断里面的e.target.checkecd;
      *  @param  {Number}            sendOrRec  2，代表收件   1，代表寄件
      *  @return {null}                         返回未空。
      **/
     handleCheckAllChange(index, item, event, sendOrRec) {
       if (this.onlyRead) return;
-      // this.checkedData[this.li0].citys = this.checkCity;
-      // console.log(this.checkCitysData);
-      // let tempCitysArr = [];
-      //    for(let k =0;k<this.checkCity.length;k++) {
-      //        let tempCitysObj = {};
-      //        tempCitysObj.cityName = this.checkCity[k];
-      //        tempCitysObj.districtName = this.sourceData.noProvinces[this.li0].noServiceCitys[this.li1].noServiceDistricts,
-      //        tempCitysArr.push(tempCitysObj);
-      //    }
-      // this.checkedData[this.li0] = tempCitysArr;
-      //   console.log(this.checkedData);
-
-
+      // 首先，获取到checkbox 复选框 点击之前的check 属性对应的数
       let oldChecked = this.checkedData[this.li0].noServiceCitys[index].check
       // oldChecked ： 0, 两个都没有选中   1， 选中了寄件    2， 选中了收件，   3， 选中了收件
-
       console.log(this.checkedData[this.li0].noServiceCitys[index]);
+      alert(event.target.checked);
       if (event.target.checked) {
         // this.checkedData[this.li0]
-        if (oldChecked === 3) {
-
-        } else if (oldChecked === 2) {
-          if (sendOrRec === 2) {
-
-          } else {
-            this.checkedData[this.li0].noServiceCitys[index].check = oldChecked + 1;
-          }
-        } else if (oldChecked === 1) {
-          if (sendOrRec === 1) {
-
-          } else {
-            this.checkedData[this.li0].noServiceCitys[index].check = oldChecked + 2;
-          }
-        } else if (oldChecked === 0) {
-          this.checkedData[this.li0].noServiceCitys[index].check = oldChecked + sendOrRec;
-        }
-        //  = Object.assign({
-        //   check: true
-        // }, item)
-        //  {provinceName:'',Checked:true,noServiceCitys:item}
+        // if ((oldChecked === 2 && sendOrRec !== 2) || (oldChecked === 1 && sendOrRec !== 1)) {
+        //   // 这里代表 已经勾选了收件 或者 寄件 ，再次点击另一个本身没有勾选的收件 或者 寄件 checkbox，则 相应 check 属性变为3 ，也就是全部都勾选了，
+        //   this.checkedData[this.li0].noServiceCitys[index].check = 3;
+        // } else if (oldChecked === 0) {
+        this.checkedData[this.li0].noServiceCitys[index].check = oldChecked + sendOrRec;
+        // }
       } else {
-        if (oldChecked === 0) {
-
-        } else if (oldChecked === 3) {
+        if (oldChecked === 3) {
           this.checkedData[this.li0].noServiceCitys[index].check = oldChecked - sendOrRec;
-        } else if (oldChecked === 2) {
-          if (sendOrRec === 1) {
-
-          } else {
-            this.checkedData[this.li0].noServiceCitys[index].check = oldChecked - 2;
-          }
-        } else if (oldChecked === 1) {
-          if (sendOrRec === 2) {} else {
-            this.checkedData[this.li0].noServiceCitys[index].check = oldChecked - 1;
-          }
-
+        } else if (oldChecked === 2 && sendOrRec !== 1) {
+          this.checkedData[this.li0].noServiceCitys[index].check = oldChecked - 2;
+        } else if (oldChecked === 1 && sendOrRec !== 2) {
+          this.checkedData[this.li0].noServiceCitys[index].check = oldChecked - 1;
         }
-        // this.checkedData[this.li0].noServiceCitys[index].noServiceDistricts = [];
-        // this.checkedData[this.li0].noServiceCitys[index]=Object.assign({},{cityName:item.cityName,Checked:false})
       }
-      // console.log("sdfasdfasdf");
-      // console.log(this.checkedData[this.li0].noServiceCitys[index].check);
-      //  console.log(this.checkedData);
-      // this.sourceData.no
       let tempArrSed = [],
         tempArrRec = [];
       for (let i = 0; i < item.noServiceDistricts.length; i++) {
