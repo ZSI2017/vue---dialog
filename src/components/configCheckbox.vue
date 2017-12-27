@@ -155,7 +155,16 @@ export default {
 
   },
   methods: {
-    // 点击全选
+    /**
+     *  点击城市全选，将城市noServiceCitys 数组中对应的项，改变check属性，分别有0,1,2,3 四种情况，
+     *  并且改变 checkedDistric 数组中的的区县内容，相应的全部加入，活着 设置为空，
+     *  @method handleCheckAllChange
+     *  @param  {Number}             index     获取到点击全选的是哪一项
+     *  @param  {Object}             item      保存点击城市对应的整个对象数据，
+     *  @param  {Object}             event     获取到原生的事件对象，用来判断里面的e.target.checkecd;
+     *  @param  {Number}            sendOrRec  2，代表收件   1，代表寄件
+     *  @return {null}                         返回未空。
+     **/
     handleCheckAllChange(index, item, event, sendOrRec) {
       if (this.onlyRead) return;
       // this.checkedData[this.li0].citys = this.checkCity;
@@ -508,7 +517,6 @@ export default {
     handleSave() {
       this.visible = false;
       this.fullscreenLoading = true;
-      // let url = "/api/noService/update"
       console.log(this.checkedData);
       setTimeout(() => {
         this.fullscreenLoading = false;
@@ -605,6 +613,7 @@ export default {
     .activeClass {
         background-color: #58B7FF !important;
     }
+
     //////////////// 自定义滑块样式////////////////
     ::-webkit-scrollbar {
         width: 3px;
