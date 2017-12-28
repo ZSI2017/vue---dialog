@@ -16,8 +16,9 @@
     <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
     <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
     <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
+    <!-- <span :class="{}">{{scope.row.status | formatOrderStatus}}</span> -->
   </ul>
-  <h2 @click="toggleSeeDialog">点击打开弹窗-查看模式</h2>
+  <h2 @click="toggleSeeDialog" :class="'某某前缀' + array[logisMerchId+1]">点击打开弹窗-查看模式</h2>
   <h2 @click="toggleEditDialog">点击打开弹窗-编辑模式</h2>
 
   <config-checkbox :visible="dialogConfigVisible" :sourceData="result" :logisMerchId='logisMerchId' :onlyRead='isCheckServer' @listenToConfig="changeConfigVisible"> </config-checkbox>
@@ -33,9 +34,11 @@ export default {
   },
   data() {
     return {
+      activeName: "second",
+      array: [22, 33, 44],
       dialogConfigVisible: false,
       result: {},
-      logisMerchId: 1,
+      logisMerchId: -1,
       isCheckServer: true,
       msg: 'Welcome to Your Vue.js App'
     }
@@ -43,9 +46,15 @@ export default {
   mounted() {
     console.log(this.$http)
     var _this = this;
-
+  },
+  watch: {
+    '$route': function(to, from) {
+      'aaabbbbcdddd'.match(/(.)\1+/gi);
+      alert("hhh")
+    }
   },
   methods: {
+
     changeConfigVisible(flag) {
       this.dialogConfigVisible = flag;
     },

@@ -107,6 +107,11 @@ export default {
 
   },
   watch: {
+    '$route': function(to, from) {
+      alert("dadfadsf")
+    },
+
+
     onlyRead: function(newData, oldData) {
       this.li0 = '-1';
       this.li1 = '-1';
