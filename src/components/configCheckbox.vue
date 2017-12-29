@@ -1,9 +1,9 @@
 <template type="html">
-<el-dialog class="dialogNoServer" title="选择地区" custom-class="dialogNoServerWidth" :visible.sync="visible" @close="dialogClose" v-loading.body.fullscreen.lock="fullscreenLoading">
+<el-dialog class="dialogNoServer" title="选择地区" custom-class="dialogNoServerWidth" :visible.sync="internalVisible" @close="dialogClose" v-loading.body.fullscreen.lock="fullscreenLoading">
   <el-row :span="24" style="border:1px solid #d1dbe5;border-radius:2px;box-shadow:0 2px 4px rgba(0,0,0,.12),0 0 6px rgba(0,0,0,.04);">
     <el-col :span="6">
       <li class="commonli-class li-title">省份</li>
-      <ul class="ul-block" v-if="visible">
+      <ul class="ul-block" v-if="internalVisible">
         <li v-if='(item.check)&&onlyRead||!onlyRead' class="commonli-class" :class="[index ==li0 ?activeClass:'',commonliClass]" @click="li1Click($event,index,item)" v-for="(item,index) in sourceData.noProvinces">{{item.provinceName}}</li>
       </ul>
     </el-col>
@@ -60,7 +60,7 @@
     </el-col>
   </el-row>
   <div v-if="!onlyRead" slot="footer" class="dialog-footer">
-    <el-button @click="visible = false">取 消</el-button>
+    <el-button @click="internalVisible = false">取 消</el-button>
     <el-button type="primary" @click="handleSave">保 存</el-button>
   </div>
 
@@ -106,9 +106,20 @@ export default {
 
 
   },
+  computed: {
+    internalVisible: {
+      //getter
+      get: function() {
+        return this.visible
+      },
+      set: function(newValue) {
+        // this.internalVisible = newValue;
+      }
+    }
+  },
   watch: {
     '$route': function(to, from) {
-      alert("dadfadsf")
+      // alert("dadfadsf")
     },
 
 
@@ -175,8 +186,6 @@ export default {
       // 首先，获取到checkbox 复选框 点击之前的check 属性对应的数
       let oldChecked = this.checkedData[this.li0].noServiceCitys[index].check
       // oldChecked ： 0, 两个都没有选中   1， 选中了寄件    2， 选中了收件，   3， 选中了收件
-      console.log(this.checkedData[this.li0].noServiceCitys[index]);
-      alert(event.target.checked);
       if (event.target.checked) {
         // this.checkedData[this.li0]
         // if ((oldChecked === 2 && sendOrRec !== 2) || (oldChecked === 1 && sendOrRec !== 1)) {
@@ -478,7 +487,7 @@ export default {
 
     },
     handleSave() {
-      this.visible = false;
+      this.internalVisible = false;
       this.fullscreenLoading = true;
       console.log(this.checkedData);
       setTimeout(() => {
@@ -510,7 +519,7 @@ export default {
       // })
     },
     handleCancel() {
-      this.visible = false;
+      this.internalVisible = false;
     }
   }
 }
