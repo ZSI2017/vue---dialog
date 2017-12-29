@@ -187,21 +187,9 @@ export default {
       let oldChecked = this.checkedData[this.li0].noServiceCitys[index].check
       // oldChecked ： 0, 两个都没有选中   1， 选中了寄件    2， 选中了收件，   3， 选中了收件
       if (event.target.checked) {
-        // this.checkedData[this.li0]
-        // if ((oldChecked === 2 && sendOrRec !== 2) || (oldChecked === 1 && sendOrRec !== 1)) {
-        //   // 这里代表 已经勾选了收件 或者 寄件 ，再次点击另一个本身没有勾选的收件 或者 寄件 checkbox，则 相应 check 属性变为3 ，也就是全部都勾选了，
-        //   this.checkedData[this.li0].noServiceCitys[index].check = 3;
-        // } else if (oldChecked === 0) {
         this.checkedData[this.li0].noServiceCitys[index].check = oldChecked + sendOrRec;
-        // }
       } else {
-        if (oldChecked === 3) {
-          this.checkedData[this.li0].noServiceCitys[index].check = oldChecked - sendOrRec;
-        } else if (oldChecked === 2 && sendOrRec !== 1) {
-          this.checkedData[this.li0].noServiceCitys[index].check = oldChecked - 2;
-        } else if (oldChecked === 1 && sendOrRec !== 2) {
-          this.checkedData[this.li0].noServiceCitys[index].check = oldChecked - 1;
-        }
+        this.checkedData[this.li0].noServiceCitys[index].check = oldChecked - sendOrRec;
       }
       let tempArrSed = [],
         tempArrRec = [];
@@ -210,12 +198,12 @@ export default {
         if (event.target.checked) {
           if (oldDistrictsCheck === 3) {
 
-          } else if (oldDistrictsCheck === 2) {
-            if (sendOrRec === 2) {} else {
+          } else if (oldDistrictsCheck === 2 && sendOrRec !== 2) {
+            if (sendOrRec !== 2) {
               this.checkedData[this.li0].noServiceCitys[index].noServiceDistricts[i].check = oldDistrictsCheck + 1;
             }
           } else if (oldDistrictsCheck === 1) {
-            if (sendOrRec === 1) {} else {
+            if (sendOrRec !== 1) {
               this.checkedData[this.li0].noServiceCitys[index].noServiceDistricts[i].check = oldDistrictsCheck + 2;
             }
           } else if (oldDistrictsCheck === 0) {
