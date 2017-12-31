@@ -4,7 +4,6 @@
 <section class="myCheckBox">
   <input type="checkbox" style="float:left" ref='input' :checked="mychecked" @change="updataValue" v-model="model" :value="label" :id="label" />
   <label :for="label">
-        <!-- {{myMessage}} -->
         <slot>
         </slot>
     </label>
@@ -43,7 +42,6 @@ export default {
         //  console.log(val);
         //   将父组件的 value 值作为 model的 全局中转站，保存所有checkbox的选择状态
         this.defaultParent.$emit('input', val)
-
       },
       get() {
         // console.log(this.store);
@@ -53,7 +51,6 @@ export default {
     store() {
       return this.defaultParent.value;
     }
-
   },
   methods: {
     updataValue(event) {
