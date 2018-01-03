@@ -33,6 +33,7 @@ export default {
     configCheckbox
   },
   data() {
+    this.rect = "ddd"
     return {
       activeName: "second",
       array: [22, 33, 44],
@@ -44,6 +45,8 @@ export default {
     }
   },
   mounted() {
+    console.log(this)
+    console.log(this.$data.rect)
     console.log(this.$http)
     var _this = this;
   },
