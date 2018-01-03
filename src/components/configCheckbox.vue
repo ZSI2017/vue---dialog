@@ -14,20 +14,9 @@
           <div v-if="showLi">
             <checkbox-group v-model="checkCity">
               <li v-if='((item.check||item.noServiceDistricts.some(function(im){ return im.check>0}))&&onlyRead)||!onlyRead' :class="[index==li1?activeClass:'', commonliClass]" @click="li1Click2($event,item,index)" v-for="(item,index) in list2" :key="index" style="position:relative">
-                <!-- <span v-for="it in item.noServiceDistricts">{{it.check}}</span> -->
                 <span class="city-span">{{item.cityName}}</span>
-                <!-- <el-tag
-                 style="margin-right:10px;margin-bottom:5px;"
-                  v-for="(item,index) in scope.row.cityss"
-                  :key="index"
-                  type="primary"
-                  >{{item.cityName}}</el-tag> -->
-                <!-- <el-tag type="primary" v-if="onlyRead&&item.check%2===1" >寄件</el-tag>
-                <el-tag type="primary" v-if="onlyRead&&item.check>1" >收件</el-tag> -->
-                <!-- <checkbox v-if="!onlyRead" style="" :label="item.cityName" :key="item.cityName" @change="handleCheckAllChange(index,item,$event)" ></checkbox> -->
                 <checkbox v-if="!onlyRead" class="checkbox-common" :label="item.cityName+'收'" :key="item.cityName+'收件'" @change="handleCheckAllChange(index,item,$event,2)">收件</checkbox>
                 <checkbox v-if="!onlyRead" class="checkbox-common" :label="item.cityName+'寄'" :key="item.cityName+'寄件'" @change="handleCheckAllChange(index,item,$event,1)">寄件</checkbox>
-                <!-- <checkbox v-if="!onlyRead" class="checkbox-common" :label="item.cityName+'寄收件'" :key="item.cityName+'寄收件'" @change="handleCheckAllChange(index,item,$event,3)" >寄收件</checkbox> -->
               </li>
             </checkbox-group>
           </div>
@@ -113,13 +102,12 @@ export default {
         return this.visible
       },
       set: function(newValue) {
-        // this.internalVisible = newValue;
+
       }
     }
   },
   watch: {
     '$route': function(to, from) {
-      // alert("dadfadsf")
     },
 
 
@@ -128,13 +116,6 @@ export default {
       this.li1 = '-1';
       this.showLi = false;
       this.showLi2 = false;
-      // console.log("sourceData");
-      // for(var i =0;i<newData.noProvinces.length;i++) {
-      //
-      // }
-      // this.lists1 =
-      // console.log(newData);
-      // console.log(oldData);
     },
     sourceData: function(newData, oldData) {
       console.log(newData + "--------------" + oldData);
@@ -153,9 +134,6 @@ export default {
         this.li1Click('event', index1, newData.noProvinces[index1]);
         if (typeof newData.noProvinces[index1] !== "undefined") {
           for (let k = 0; k < newData.noProvinces[index1].noServiceCitys.length; k++) {
-            console.log(newData.noProvinces[index1].noServiceCitys[k].check || newData.noProvinces[index1].noServiceCitys[k].noServiceDistricts.some(function(im) {
-              return im.check > 0
-            }))
             if (newData.noProvinces[index1].noServiceCitys[k].check || newData.noProvinces[index1].noServiceCitys[k].noServiceDistricts.some(function(im) {
                 return im.check > 0
               })) {
@@ -166,9 +144,7 @@ export default {
           this.li1Click2('event', newData.noProvinces[index1].noServiceCitys[index2], index2);
         }
       }
-
     }
-
   },
   methods: {
     /**
@@ -196,42 +172,13 @@ export default {
       for (let i = 0; i < item.noServiceDistricts.length; i++) {
         let oldDistrictsCheck = this.checkedData[this.li0].noServiceCitys[index].noServiceDistricts[i].check;
         if (event.target.checked) {
-          if (oldDistrictsCheck === 3) {
-
-          } else if (oldDistrictsCheck === 2 && sendOrRec !== 2) {
-            if (sendOrRec !== 2) {
-              this.checkedData[this.li0].noServiceCitys[index].noServiceDistricts[i].check = oldDistrictsCheck + 1;
-            }
-          } else if (oldDistrictsCheck === 1) {
-            if (sendOrRec !== 1) {
-              this.checkedData[this.li0].noServiceCitys[index].noServiceDistricts[i].check = oldDistrictsCheck + 2;
-            }
-          } else if (oldDistrictsCheck === 0) {
-            this.checkedData[this.li0].noServiceCitys[index].noServiceDistricts[i].check = oldDistrictsCheck + sendOrRec;
-          }
+              this.checkedData[this.li0].noServiceCitys[index].noServiceDistricts[i].check = oldDistrictsCheck + sendOrRec;
         } else {
-          if (oldDistrictsCheck === 0) {
-
-          } else if (oldDistrictsCheck === 3) {
-            this.checkedData[this.li0].noServiceCitys[index].noServiceDistricts[i].check = oldDistrictsCheck - sendOrRec;
-          } else if (oldDistrictsCheck === 2) {
-            if (sendOrRec === 1) {} else {
-              this.checkedData[this.li0].noServiceCitys[index].noServiceDistricts[i].check = oldDistrictsCheck - 2;
-            }
-          } else if (oldDistrictsCheck === 1) {
-            if (sendOrRec === 2) {} else {
-              this.checkedData[this.li0].noServiceCitys[index].noServiceDistricts[i].check = oldDistrictsCheck - 1;
-            }
-          }
+              this.checkedData[this.li0].noServiceCitys[index].noServiceDistricts[i].check = oldDistrictsCheck - sendOrRec;
         }
-
-        // this.checkedData[this.li0].noServiceCitys[index].noServiceDistricts[i].check = event.target.checked
-        //  ?(oldDistrictsCheck===sendOrRec?oldDistrictsCheck:(oldDistrictsCheck+sendOrRec))
-        //  :(oldDistrictsCheck===sendOrRec?0:(oldDistrictsCheck===3?(oldDistrictsCheck-sendOrRec):oldDistrictsCheck))
+       // tempArrSed, tempArrRec 中 填入 寄件，收件。
         tempArrSed.push(item.noServiceDistricts[i].districtName + '寄');
         tempArrRec.push(item.noServiceDistricts[i].districtName + '收');
-
-        console.log(this.checkedData[this.li0].noServiceCitys[index].noServiceDistricts[i].check)
       }
       if (this.checkedData[this.li0].noServiceCitys[index].check === 3) {
         this.checkedDistric = tempArrSed.concat(tempArrRec)
@@ -291,20 +238,6 @@ export default {
       if (this.onlyRead) return;
       //  记录对应的数据到指定的数据结构当中
       let tempCityName = this.sourceData.noProvinces[this.li0].noServiceCitys[this.li1].cityName;
-      // // console.log(tempCityName
-      // // 如果在 对应的 数组对象还没有生成的情况下，先指定期 cityName：值
-      // this.checkedData[this.li0].noServiceCitys[this.li1].cityName = tempCityName;
-      // //  生成对应的 noServiceDistricts 数组，保持跟当前 this.checkedDistric 里面的内容一致;
-      // let tempdistrictName = [];
-      // for (let j = 0; j <  j++) {
-      //   tempdistrictName.push({
-      //     districtName: this.checkedDistric[j],
-      //     check:1,
-      //   })
-      // }
-
-      // this.checkedData[this.li0].noServiceCitys[this.li1].noServiceDistricts = tempdistrictName;
-      // 将原始数据和 动态生成的已勾选数据    noServiceDistricts 长度 的 进行比较
       let checkedDataDistrictNameSedLength = 0,
         checkedDataDistrictNameRecLength = 0;
       this.checkedDistric.forEach(function(value, index) {
@@ -345,25 +278,6 @@ export default {
         }
         if (this.checkCity.indexOf(tempCityName + '收') >= 0) this.checkCity.splice(this.checkCity.indexOf(tempCityName + '收'), 1);
       }
-
-      console.log(this.checkedData[this.li0].noServiceCitys[this.li1].check);
-      // console.log(tempdistrictName.length);
-      // console.log(this.sourceData.noProvinces[this.li0].noServiceCitys[this.li1].noServiceDistricts.length);
-      //   let targetPlace = this.checkedData[this.li0].length;
-      //  for(let m =0;m<this.checkedData[this.li0].length;m++) {
-      //       if(this.checkedData[this.li0][m].cityName == tempCityName){
-      //            targetPlace = m;
-      //       }
-      //  }
-      //   let tempdistrictName = [];
-      //    for(let j =0 ;j<this.checkedDistric.length;j++) {
-      //            tempdistrictName.push({districtName: this.checkedDistric[j]})
-      //    }
-      //    if(Object.prototype.toString.call(this.checkedData[this.li0][targetPlace]) !== "[object Object]") {
-      //       this.checkedData[this.li0][targetPlace] = {cityName:tempCityName};
-      //    }
-      //     this.checkedData[this.li0][targetPlace].noServiceDistricts = tempdistrictName;
-      // console.log(this.checkedData);
     },
     li1Click(event, index, item) {
       this.li0 = index;
@@ -375,12 +289,7 @@ export default {
             provinceName: item.provinceName,
             noServiceCitys: []
           };
-        // console.log("li1li1li1li1li1li1li1li1li1lil1li1li1l.");
-
-        // console.log(event);
-        // this.sourceData.noProvinces[index].noServiceCitys;
         var noServiceCitysArr = this.checkedData[index].noServiceCitys
-        console.log(this.checkedData[index].noServiceCitys[0].check);
         if (noServiceCitysArr.length > 0) {
           let tempArr = [];
           for (let k = 0; k < noServiceCitysArr.length; k++) {
@@ -395,15 +304,11 @@ export default {
               } else if (noServiceCitysArr[k].check === 1) {
                 tempArr.push(noServiceCitysArr[k].cityName + '寄');
               }
-              // else
-              // toDo  增加不确定状态的标记
             }
           }
           this.checkCity = tempArr;
         } else {
           this.checkCity = [];
-          //  this.checkedData[index] =[];
-          //  this.checkedData[index].citys= [];
         }
       }
 
@@ -440,10 +345,7 @@ export default {
         if (Object.prototype.toString.call(this.checkedData[this.li0].noServiceCitys[index]) === "[object Object]") {
           var noServiceDistrictsArr = this.checkedData[this.li0].noServiceCitys[index].noServiceDistricts;
           if (noServiceDistrictsArr && noServiceDistrictsArr.length > 0) {
-            //  let noServiceArr = this.checkedData[this.li0][m].noServiceDistricts
-            //  console.log(noServiceArr);
             let tempArr = [];
-            // this.sourceData.no
             for (let i = 0; i < noServiceDistrictsArr.length; i++) {
               if (noServiceDistrictsArr[i].check === 3) {
                 tempArr.push(noServiceDistrictsArr[i].districtName + "寄");
@@ -455,7 +357,6 @@ export default {
               }
             }
             this.checkedDistric = tempArr;
-
           } else {
             this.checkedData[this.li0].noServiceCitys[index].noServiceDistricts = [];
             this.checkedDistric = [];
@@ -472,7 +373,6 @@ export default {
       this.showLi = false;
       this.showLi2 = false;
       this.$emit("listenToConfig", false)
-
     },
     handleSave() {
       this.internalVisible = false;
@@ -485,26 +385,6 @@ export default {
           type: 'success'
         });
       }, 1000)
-      // this.$http.post(url, {
-      //   "noService": {
-      //     noProvinces: this.checkedData
-      //   },
-      //   "data": {
-      //     "logisMerchId": this.logisMerchId
-      //   }
-      // }, (result) => {
-      //   this.fullscreenLoading = false;
-      //   this.$message({
-      //     message: '保存成功',
-      //     type: 'success'
-      //   });
-      // }, (error) => {
-      //   this.fullscreenLoading = false;
-      //   this.$message({
-      //     message: '保存失败',
-      //     type: 'warning'
-      //   })
-      // })
     },
     handleCancel() {
       this.internalVisible = false;

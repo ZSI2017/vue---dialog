@@ -18,4 +18,38 @@
 
   具体数据格式，见[/mock/list1.js](./mock/list1.js)
 
-主要功能：
+组件：
+`checkboxGroup.vue` 和对应的子组件`checkbox.vue`嵌套使用;
+```
+   <checkbox-group>
+     <checkbox>
+     </checkbox>
+  </checkbox-group>
+```
+
+`checkbox.vue`组件，[主要由input 组成，](/src/components/checkbox.vue)
+```
+ <input v-module = "model" />
+ <script>
+   computed: {
+      model:{
+        set(val) {
+          this.$parent.$emit('input',val)
+        },
+        get(){
+          return this.store
+        }
+      }
+   }
+
+ </script>
+
+```
+子组件checkbox中 v-module 绑定的值发生变化时，触发父组件，即checkbox-group 中的input 事件，
+同时 [v-module指令只是语法糖](https://cn.vuejs.org/v2/guide/components.html#使用自定义事件的表单输入组件) 相当于：
+```
+<input
+ v-bind:value="something"
+ v-on:input="something = $event.target.value">
+```
+所以，触发了父组件中的input 事件,相当于修改了父组件中的v-model 对应的的值。
