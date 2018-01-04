@@ -1,5 +1,5 @@
 <template>
-<div class="hello">
+<div class="hello" @listenToConfig="changeConfigVisible">
   <h1>{{ msg }}</h1>
   <h2>Essential Links</h2>
   <ul>
@@ -18,19 +18,29 @@
     <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
     <!-- <span :class="{}">{{scope.row.status | formatOrderStatus}}</span> -->
   </ul>
-  <h2 @click="toggleSeeDialog" >点击打开弹窗-查看模式</h2>
+  <h2 @click="toggleSeeDialog" :class="[ '111',true? '333': '444']">点击打开弹窗-查看模式</h2>
   <h2 @click="toggleEditDialog">点击打开弹窗-编辑模式</h2>
+  <!-- @listenToConfig="changeConfigVisible"  -->
+  <config-checkbox :visible="dialogConfigVisible" :sourceData="result" :logisMerchId='logisMerchId' :onlyRead='isCheckServer'> </config-checkbox>
 
-  <config-checkbox :visible="dialogConfigVisible" :sourceData="result" :logisMerchId='logisMerchId' :onlyRead='isCheckServer' @listenToConfig="changeConfigVisible"> </config-checkbox>
+  <f1>
+    <c2></c2>
+  </f1>
+
+
 </div>
 </template>
 
 <script>
 import configCheckbox from "./configCheckbox";
+import f1 from "./f1";
+import c2 from "./c2";
 export default {
   name: 'HelloWorld',
   components: {
-    configCheckbox
+    configCheckbox,
+    f1,
+    c2
   },
   data() {
     this.rect = "ddd"
@@ -59,7 +69,9 @@ export default {
   methods: {
 
     changeConfigVisible(flag) {
-      this.dialogConfigVisible = flag;
+      console.log(flag);
+      this.dialogConfigVisible = !!flag;
+      alert(this.dialogConfigVisible);
     },
     toggleSeeDialog() {
       this.$http.get('/list1', (data) => {

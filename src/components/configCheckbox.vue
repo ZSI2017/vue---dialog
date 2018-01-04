@@ -59,8 +59,10 @@
 <script type="text/javascript">
 import checkbox from "./checkbox";
 import checkboxGroup from "./checkboxGroup"
+import Emitter from "../mixins/emitter"
 export default {
   name: 'checkServer',
+  mixins: [Emitter],
   components: {
     checkbox,
     checkboxGroup
@@ -107,8 +109,7 @@ export default {
     }
   },
   watch: {
-    '$route': function(to, from) {
-    },
+    '$route': function(to, from) {},
 
 
     onlyRead: function(newData, oldData) {
@@ -172,11 +173,11 @@ export default {
       for (let i = 0; i < item.noServiceDistricts.length; i++) {
         let oldDistrictsCheck = this.checkedData[this.li0].noServiceCitys[index].noServiceDistricts[i].check;
         if (event.target.checked) {
-              this.checkedData[this.li0].noServiceCitys[index].noServiceDistricts[i].check = oldDistrictsCheck + sendOrRec;
+          this.checkedData[this.li0].noServiceCitys[index].noServiceDistricts[i].check = oldDistrictsCheck + sendOrRec;
         } else {
-              this.checkedData[this.li0].noServiceCitys[index].noServiceDistricts[i].check = oldDistrictsCheck - sendOrRec;
+          this.checkedData[this.li0].noServiceCitys[index].noServiceDistricts[i].check = oldDistrictsCheck - sendOrRec;
         }
-       // tempArrSed, tempArrRec 中 填入 寄件，收件。
+        // tempArrSed, tempArrRec 中 填入 寄件，收件。
         tempArrSed.push(item.noServiceDistricts[i].districtName + '寄');
         tempArrRec.push(item.noServiceDistricts[i].districtName + '收');
       }
@@ -372,7 +373,9 @@ export default {
     dialogClose() {
       this.showLi = false;
       this.showLi2 = false;
-      this.$emit("listenToConfig", false)
+      console.log("into dispatch");
+      this.dispatch('HelloWorld', 'listenToConfig', false);
+      // this.$emit("listenToConfig", false)
     },
     handleSave() {
       this.internalVisible = false;
