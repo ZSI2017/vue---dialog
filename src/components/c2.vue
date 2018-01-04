@@ -11,6 +11,7 @@ import Emitter from "../mixins/emitter";
 export default {
   name: "c2",
   mixins: [Emitter],
+  optionsVue: "222"
   model: {
     prop: 'mychecked',
     event: 'change'
