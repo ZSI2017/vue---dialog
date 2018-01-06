@@ -22,6 +22,15 @@
   <h2 @click="toggleEditDialog">点击打开弹窗-编辑模式</h2>
 
   <config-checkbox :visible="dialogConfigVisible" :sourceData="result" :logisMerchId='logisMerchId' :onlyRead='isCheckServer' @listenToConfig="changeConfigVisible"> </config-checkbox>
+
+  <div @click="selectMyCollectList(item,index)" v-for="(item,index) in testOBj":style="{background: item.collectColor}">
+     <span v-show="true">{{index}}{{item.selected}}</span>
+  </div>
+  <el-row>
+    <el-col :span=8><el-button type="primary" >这是el-col内的button</el-button></el-col>
+    <el-col :span=8><a href="">这是el-col内的link（align top了）</a></el-col>
+    </el-row>
+
 </div>
 </template>
 
@@ -34,6 +43,14 @@ export default {
   },
   data() {
     return {
+      ttt:"",
+      src:'/assets/logo.png',
+      testOBj:[
+        {selected:true,collectColor:"black"},
+        {selected:true,collectColor:"black"},
+        {selected:true,collectColor:"black"}
+
+      ],
       activeName: "second",
       array: [22, 33, 44],
       dialogConfigVisible: false,
@@ -44,6 +61,7 @@ export default {
     }
   },
   mounted() {
+    this.ttt = "<img :src='"+this.src+ "'>"
     console.log(this.$http)
     var _this = this;
   },
@@ -54,7 +72,11 @@ export default {
     }
   },
   methods: {
+   selectMyCollectList(item,idx){
+      item.selected = !item.selected;
+      console.log(item.selected)
 
+   },
     changeConfigVisible(flag) {
       this.dialogConfigVisible = flag;
     },
