@@ -16,6 +16,7 @@ Object.defineProperty(Vue.prototype, '$http', { value: http})
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  customOption:"foo",
   router,
   template: '<App/>',
   components: { App }

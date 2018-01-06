@@ -18,6 +18,17 @@
 
   具体数据格式，见[/mock/list1.js](./mock/list1.js)
 
+两种模式（可通过本地存储或后台接口进行关联）：
+
+   编辑模式：
+    ![编辑模式](./Edit.gif)
+
+
+   查看模式：
+
+   ![查看模式](./onlyRead.gif)
+
+
 组件：
 `checkboxGroup.vue` 和对应的子组件`checkbox.vue`嵌套使用;
 ```

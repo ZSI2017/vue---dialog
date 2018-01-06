@@ -17,9 +17,7 @@ export default {
     dispatch(componentName, eventName, params) {
       // console.log(" "+componentName+" "+eventName + " "+params);
       var parent = this.$parent || this.$root;
-      var name = parent.$options.componentName;
-       console.log(name +"-------");
-       console.log(this.$parent.$options);
+      var name = parent.$options._componentTag;
       while (parent && (!name || name !== componentName)) {
         parent = parent.$parent;
 

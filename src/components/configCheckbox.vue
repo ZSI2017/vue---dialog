@@ -373,9 +373,8 @@ export default {
     dialogClose() {
       this.showLi = false;
       this.showLi2 = false;
-      console.log("into dispatch");
-      this.dispatch('HelloWorld', 'listenToConfig', false);
-      // this.$emit("listenToConfig", false)
+      // this.dispatch('HelloWorld', 'listenToConfig', false);
+      this.$emit("listenToConfig", false)
     },
     handleSave() {
       this.internalVisible = false;
