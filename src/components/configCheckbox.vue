@@ -1,41 +1,96 @@
 <template type="html">
-<el-dialog class="dialogNoServer" title="选择地区" custom-class="dialogNoServerWidth" :visible.sync="internalVisible" @close="dialogClose" v-loading.body.fullscreen.lock="fullscreenLoading">
-  <el-row :span="24" style="border:1px solid #d1dbe5;border-radius:2px;box-shadow:0 2px 4px rgba(0,0,0,.12),0 0 6px rgba(0,0,0,.04);">
-    <el-col :span="6">
-      <li class="commonli-class li-title">省份</li>
-      <ul class="ul-block" v-if="internalVisible">
-        <li v-if='(item.check)&&onlyRead||!onlyRead' class="commonli-class" :class="[index ==li0 ?activeClass:'',commonliClass]" @click="li1Click($event,index,item)" v-for="(item,index) in sourceData.noProvinces">{{item.provinceName}}</li>
+<el-dialog
+   class="dialogNoServer"
+   title="选择地区"
+   custom-class="dialogNoServerWidth"
+   :visible.sync="internalVisible"
+   @close="dialogClose"
+   v-loading.body.fullscreen.lock="fullscreenLoading"
+  >
+  <el-row :span="24" class="box-content" >
+    <el-col :span="internalLevels == 1?24:internalLevels==2?12:6">
+      <li class="commonli-class li-title">
+        省份
+      </li>
+      <ul
+        class="ul-block"
+        v-if="internalVisible">
+        <li
+           v-if='(item.check)&&onlyRead||!onlyRead'
+           class="commonli-class"
+           :class="[index ==li0 ?activeClass:'',commonliClass]"
+           @click="li1Click($event,index,item)"
+           v-for="(item,index) in sourceData.noProvinces">
+           {{item.provinceName}}
+         </li>
       </ul>
     </el-col>
-    <el-col :span="9">
+    <el-col :span="internalLevels ==2?12:9" v-if="internalLevels>=2">
       <li class="commonli-class li-title">城市</li>
       <ul class="ul-block">
         <el-collapse-transition>
           <div v-if="showLi">
             <checkbox-group v-model="checkCity">
-              <li v-if='((item.check||item.noServiceDistricts.some(function(im){ return im.check>0}))&&onlyRead)||!onlyRead' :class="[index==li1?activeClass:'', commonliClass]" @click="li1Click2($event,item,index)" v-for="(item,index) in list2" :key="index" style="position:relative">
+              <li
+               v-if='((item.check||item.noServiceDistricts.some(function(im){ return im.check>0}))&&onlyRead)||!onlyRead' :class="[index==li1?activeClass:'', commonliClass]" @click="li1Click2($event,item,index)" v-for="(item,index) in list2" :key="index" style="position:relative">
                 <span class="city-span">{{item.cityName}}</span>
-                <checkbox v-if="!onlyRead" class="checkbox-common" :label="item.cityName+'收'" :key="item.cityName+'收件'" @change="handleCheckAllChange(index,item,$event,2)">收件</checkbox>
-                <checkbox v-if="!onlyRead" class="checkbox-common" :label="item.cityName+'寄'" :key="item.cityName+'寄件'" @change="handleCheckAllChange(index,item,$event,1)">寄件</checkbox>
+                <checkbox
+                 v-if="!onlyRead"
+                 class="checkbox-common"
+                 :label="item.cityName+'收'"
+                 :key="item.cityName+'收件'"
+                 @change="handleCheckAllChange(index,item,$event,2)">
+                 收件
+               </checkbox>
+                <checkbox
+                 v-if="!onlyRead"
+                 class="checkbox-common"
+                 :label="item.cityName+'寄'"
+                 :key="item.cityName+'寄件'"
+                 @change="handleCheckAllChange(index,item,$event,1)">
+                 寄件
+               </checkbox>
               </li>
             </checkbox-group>
           </div>
         </el-collapse-transition>
       </ul>
     </el-col>
-    <el-col :span="9">
+    <el-col :span="9" v-if="internalLevels >=3">
       <li class="commonli-class li-title">区县</li>
       <ul class="ul-block">
         <el-collapse-transition>
           <div v-if="showLi2">
-            <checkbox-group v-model="checkedDistric" @change="handleDistricChange">
-              <li v-if='(item.check&&onlyRead)||!onlyRead' class="commonli-class" :style="{'text-align':onlyRead?'center':''}" v-for="(item,index) in list3">
-                <span class="distric-span" v-if="!onlyRead">{{item.districtName}}</span>
-                <checkbox class="" style="padding-left:10px;" v-if="!onlyRead" :label="item.districtName+'寄'" @change="handleCheckbox(index,$event,1)" :key="item.districtName+'寄'">寄件</checkbox>
-                <checkbox class="" v-if="!onlyRead" :label="item.districtName+'收'" @change="handleCheckbox(index,$event,2)" :key="item.districtName+'收'">收件</checkbox>
-                <!-- <checkbox  class="checkbox-common"  v-if="!onlyRead" :label="item.districtName+'寄收件'" @change="handleCheckbox(index,$event,3)"  :key="item.districtName+'寄收件'">寄收件</checkbox> -->
-                <span v-if="onlyRead" style="display:inline-block;width:110px;text-align:right;overflow:hidden;white-space: nowrap;
-                  text-overflow: ellipsis;">{{item.districtName}}</span>
+            <checkbox-group
+             v-model="checkedDistric"
+             @change="handleDistricChange">
+              <li
+                v-if='(item.check&&onlyRead)||!onlyRead'
+                class="commonli-class"
+                :style="{'text-align':onlyRead?'center':''}"
+                v-for="(item,index) in list3">
+                <span
+                 class="distric-span"
+                 v-if="!onlyRead">
+                 {{item.districtName}}
+                </span>
+                <checkbox
+                 style="padding-left:10px;"
+                 v-if="!onlyRead"
+                 :label="item.districtName+'寄'"
+                 @change="handleCheckbox(index,$event,1)"
+                 :key="item.districtName+'寄'">
+                 寄件
+                </checkbox>
+                <checkbox
+                 class=""
+                 v-if="!onlyRead"
+                 :label="item.districtName+'收'"
+                 @change="handleCheckbox(index,$event,2)"
+                 :key="item.districtName+'收'">
+                 收件
+                 </checkbox>
+                <span v-if="onlyRead" class="levels3-class">{{item.districtName}}</span>
                 <span style="display:inline-block;width:100px;text-align:left">
                   <el-tag  type="primary" v-if="onlyRead&&item.check%2===1" >寄件</el-tag>
                   <el-tag  type="primary" v-if="onlyRead&&item.check>1" >收件</el-tag>
@@ -67,6 +122,21 @@ export default {
     checkbox,
     checkboxGroup
   },
+  props: {
+    visible: Boolean,
+
+    sourceData: Object,
+
+    onlyRead:{
+      type:Boolean,
+      default:true
+    },
+
+    levels:{
+      type:Number,
+      default:3
+    }
+  },
   data() {
     return {
       fullscreenLoading: false,
@@ -87,31 +157,26 @@ export default {
       isIndeterminate: [] // 表示 城市全选框的 不确定状态;
     }
   },
-  props: {
-    visible: Boolean,
-    sourceData: Object,
-    onlyRead: Boolean,
-    logisMerchId: Number
-  },
+
   created() {
 
 
   },
   computed: {
     internalVisible: {
-      //getter
       get: function() {
         return this.visible
       },
-      set: function(newValue) {
-
-      }
+      set: function(newValue) {}
+    },
+    internalLevels:{
+      get:function(){
+         return this.levels
+      },
+      set:function(){}
     }
   },
   watch: {
-    '$route': function(to, from) {},
-
-
     onlyRead: function(newData, oldData) {
       this.li0 = '-1';
       this.li1 = '-1';
@@ -119,7 +184,6 @@ export default {
       this.showLi2 = false;
     },
     sourceData: function(newData, oldData) {
-      console.log(newData + "--------------" + oldData);
       this.checkedData = newData.noProvinces;
       if (!this.onlyRead) {
         this.li1Click('event', 0, newData.noProvinces[0]);
@@ -400,6 +464,11 @@ export default {
     width: 800px;
 }
 .dialogNoServer {
+    .box-content {
+      border:1px solid #d1dbe5;
+      border-radius:2px;
+      box-shadow:0 2px 4px rgba(0,0,0,.12),0 0 6px rgba(0,0,0,.04);
+    }
     .ul-block {
         width: 100%;
         height: 330px;
@@ -447,6 +516,14 @@ export default {
         }
         .checkbox-common {
             float: right;
+        }
+        .levels3-class {
+          display:inline-block;
+          width:110px;
+          text-align:right;
+          overflow:hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
         }
     }
     .commonli-class:hover {

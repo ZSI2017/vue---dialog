@@ -11,7 +11,13 @@
 
 
 
-  <config-checkbox :visible="dialogConfigVisible" :sourceData="result" :logisMerchId='logisMerchId' :onlyRead='isCheckServer' @listenToConfig="changeConfigVisible"> </config-checkbox>
+  <config-checkbox
+    :visible="dialogConfigVisible"
+    :sourceData="result"
+    :onlyRead='isCheckServer'
+    :levels="defaultLevals"
+    @listenToConfig="changeConfigVisible"
+  > </config-checkbox>
 </div>
 </template>
 
@@ -26,6 +32,7 @@ export default {
   data() {
     this.rect = "ddd"
     return {
+      defaultLevals:2,
       dialogConfigVisible: false,
       result: {},
       logisMerchId: -1,
