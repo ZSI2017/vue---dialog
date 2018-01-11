@@ -286,7 +286,7 @@ export default {
         } else {
           this.checkedData[this.li0].noServiceCitys[index].noServiceDistricts[i].check = oldDistrictsCheck - sendOrRec;
         }
-        // tempArrSed, tempArrRec 中 填入 寄件，收件。
+        // t  empArrSed, tempArrRec 中 填入 寄件，收件。
         tempArrSed.push(item.noServiceDistricts[i].districtName + '寄');
         tempArrRec.push(item.noServiceDistricts[i].districtName + '收');
       }

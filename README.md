@@ -15,53 +15,74 @@
 
 数据类型：
   **配置不同levels,生成不同级选择器，对应不用的数据结构，数组对象的嵌套层级相应会改变**
+
    - 一级选择器
      ```
        [
-         { districtName:"北京",  // 省名
-           checked:0          // 是否选中， 0 未选中， 1 选中
+         { leveloneValue:"北京",     // 省名
+           check:0                // 是否选中， 0 未选中， 1 选中
          },
-         { districtName:"北京",
-           checked:0
+         { leveloneValue:"北京",
+           check:0
           },
-         { districtName:"北京",
-           checked:0
+         { leveloneValue:"北京",
+           check:0
            }
       ]
      ```
    - 二级选择器
     ```
       [
-        { districtName:"北京",      // 省名
-          checked:0,               // 省对应的市是否全选: 0 否 ，非0 是
-          city:[{                 //  省下面的市，对应对象数组。              
-                 cityName:"北京市",
-                 checked:0,
-               },{
-                  cityName:"北京市",
-                  checked:0,
-              }]
+        { leveloneValue:"北京",       // 省名
+          check:0,                 // 省对应的市是否全选: 0 否 ，非0 是
+          leveltwoArray:[{           //  省下面的市，对应对象数组。              
+                 leveltwovalue:"北京市",
+                 check:0,
+                },{
+                   leveltwovalue:"北京市",
+                   check:0,
+                }]
         }
      ]
     ```
    - 三级选择器
     ```
     [
-      { districtName:"北京",      // 省名
-        checked:0,               // 省对应的市是否全选: 0 否 ，非0 是
-        city:[{                 //  省下面的市，对应对象数组。              
-               cityName:"北京市",
-               checked:0,
-
+      { leveloneValue:"北京",        // 省名
+        check:0,                   // 省对应的市是否全选: 0 否 ，1 是
+        leveltwoArray:[{             //  省下面的市，对应对象数组。              
+               leveltwovalue:"北京市",
+               check:0,
+               levelthreeArray:[
+                   {
+                     levelthreeValue:朝阳区，
+                     check:0,
+                   },
+                   {
+                     levelthreeValue:朝阳区，
+                     check:0,
+                   }
+               ]
              },{
-                cityName:"北京市",
-                checked:0,
+                leveltwovalue:"北京市",
+                check:0,
+                levelthreeArray:[
+                    {
+                      levelthreeValue:朝阳区，
+                      check:0,
+                    },
+                    {
+                      levelthreeValue:朝阳区，
+                      check:0,
+                    }
+                ]
             }]
       }
    ]
     ```
 
-  **check:  0，代表未选中   1，代表选中了寄件    2，代表选中收件    3，代表选中了寄件和收件**
+ **如果配置了 三级level中 配置了 区分两种条件 进行选中，即使用了 attribute 中的 tips 数组,check 字段的含义也相应变化。**
+  check:  0，代表未选中   1，代表选中tips[1]    2，代表选中tips[2]    3，代表选中了tips[1]和tips[2].
 
   具体数据格式，见[/mock/list1.js](./mock/list1.js)
    配置不同levels,对应不用的数据结构
