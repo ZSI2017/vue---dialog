@@ -32,38 +32,25 @@
      ```
    - 二级选择器
      ```
-      [
-        { leveloneValue:"北京",       // 省名
-          check:0,                 // 省对应的市是否全选: 0 否 ，非0 是
-          leveltwoArray:[{           //  省下面的市，对应对象数组。              
-                 leveltwovalue:"北京市",
-                 check:0,
-                },{
-                   leveltwovalue:"北京市",
-                   check:0,
-                }]
-        }
-     ]
-    ```
+     [
+       { leveloneValue:"北京",       // 省名
+         check:0,                 // 省对应的市是否全选: 0 否 ，非0 是
+         leveltwoArray:[{           //  省下面的市，对应对象数组。              
+                leveltwovalue:"北京市",
+                check:0,
+               },{
+                  leveltwovalue:"北京市",
+                  check:0,
+               }]
+       }
+    ]
+     ```
    - 三级选择器
      ```
-    [
-      { leveloneValue:"北京",        // 省名
-        check:0,                   // 省对应的市是否全选: 0 否 ，1 是
-        leveltwoArray:[{             //  省下面的市，对应对象数组。              
-               leveltwovalue:"北京市",
-               check:0,
-               levelthreeArray:[
-                   {
-                     levelthreeValue:朝阳区，
-                     check:0,
-                   },
-                   {
-                     levelthreeValue:朝阳区，
-                     check:0,
-                   }
-               ]
-             },{
+     [
+       { leveloneValue:"北京",        // 省名
+         check:0,                   // 省对应的市是否全选: 0 否 ，1 是
+         leveltwoArray:[{             //  省下面的市，对应对象数组。              
                 leveltwovalue:"北京市",
                 check:0,
                 levelthreeArray:[
@@ -76,10 +63,23 @@
                       check:0,
                     }
                 ]
-            }]
-      }
-   ]
-      ```
+              },{
+                 leveltwovalue:"北京市",
+                 check:0,
+                 levelthreeArray:[
+                     {
+                       levelthreeValue:朝阳区，
+                       check:0,
+                     },
+                     {
+                       levelthreeValue:朝阳区，
+                       check:0,
+                     }
+                 ]
+             }]
+       }
+    ]
+     ```
 
  **如果配置了 三级level中 配置了 区分两种条件 进行选中，即使用了 attribute 中的 tips 数组,check 字段的含义也相应变化。**
   check:  0，代表未选中   1，代表选中tips[1]    2，代表选中tips[2]    3，代表选中了tips[1]和tips[2].
