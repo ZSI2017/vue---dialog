@@ -6,10 +6,15 @@ import 'element-ui/lib/theme-chalk/index.css'
 import App from './App'
 import router from './router'
 import http from "@/util/http.js"
+import configCheckbox from "./components/configCheckbox/index.js"
+import checkboxGroup from "./components/checkboxGroup/index.js"
 
 Vue.config.productionTip = false
 
 Vue.use(ElementUI);
+
+Vue.use(configCheckbox);
+Vue.use(checkboxGroup);
 //  axios  加入到 vue 的原型方法中
 Object.defineProperty(Vue.prototype, '$http', { value: http})
 

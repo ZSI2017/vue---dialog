@@ -22,13 +22,10 @@ export default {
     mychecked: Boolean,
     checked: Boolean,
     myMessage: String,
-
   },
   data() {
     return {
-      // checked: [],
       defaultParent: {}
-
     }
   },
   created() {
@@ -38,13 +35,10 @@ export default {
   computed: {
     model: {
       set(val) {
-        //  console.log("**************");
-        //  console.log(val);
         //   将父组件的 value 值作为 model的 全局中转站，保存所有checkbox的选择状态
         this.defaultParent.$emit('input', val)
       },
       get() {
-        // console.log(this.store);
         return this.store;
       }
     },
@@ -55,19 +49,11 @@ export default {
   methods: {
     updataValue(event) {
       //  这里设置 在checkbox中 触发的change 事件
-       this.$emit('change', event);
-       console.log(this.defaultParent);
-      //  在 checkbox 中触发了 change 事件，就会在相应的boxGroup 中触发对应的change 事件
-      // if(this.parent.$options._componentTag === "box-group") {
-       this.defaultParent.$emit('change', this.defaultParent.value);
+      this.$emit('change', event);
+      this.defaultParent.$emit('change', this.defaultParent.value);
     }
-
   },
-  mounted() {
-
-
-  },
-
+  mounted() {},
 }
 </script>
 <style lang="scss">

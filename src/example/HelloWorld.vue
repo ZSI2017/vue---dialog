@@ -1,51 +1,41 @@
 <template>
-<div class="hello" @listenToConfig="changeConfigVisible">
+<div
+  class="hello"
+  @listenToConfig="changeConfigVisible"
+>
   <h1>{{ msg }}</h1>
   <h2>Essential Links</h2>
 
   <h2 @click="toggleSeeDialog">点击打开弹窗-查看模式</h2>
   <h2 @click="toggleEditDialog">点击打开弹窗-编辑模式</h2>
-  <!-- @listenToConfig="changeConfigVisible"  -->
-  <config-checkbox :visible="dialogConfigVisible" :sourceData="result" :logisMerchId='logisMerchId' :onlyRead='isCheckServer'> </config-checkbox>
-
-
-
 
   <config-checkbox
     :visible="dialogConfigVisible"
     :sourceData="result"
     :onlyRead='isCheckServer'
     :levels="defaultLevals"
+    :tips="tipArray"
     @listenToConfig="changeConfigVisible"
   > </config-checkbox>
-</div>
+
+
+    </div>
 </template>
 
 <script>
-import configCheckbox from "./configCheckbox";
+// import configCheckbox from "./configCheckbox";
 export default {
   name: 'HelloWorld',
   componentName: 'HelloWorld',
-  components: {
-    configCheckbox,
-  },
   data() {
-    this.rect = "ddd"
     return {
-      defaultLevals:2,
+      defaultLevals: 3,
       dialogConfigVisible: false,
       result: {},
       logisMerchId: -1,
       isCheckServer: true,
-      msg: 'Welcome to Your Vue.js App'
-    }
-  },
-  mounted() {
-    this.ttt = "<img :src='"+this.src+ "'>"
-    var _this = this;
-  },
-  watch: {
-    '$route': function(to, from) {
+      msg: 'Welcome to dialog',
+      tipArray: ["寄件","收件"]
     }
   },
   methods: {

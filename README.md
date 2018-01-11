@@ -64,3 +64,13 @@
  v-on:input="something = $event.target.value">
 ```
 所以，触发了父组件中的input 事件,相当于修改了父组件中的v-model 对应的的值。
+
+## configCheckbox  --   attribute ##
+
+参数   |   类型 |   说明 | 默认值
+-----  |------ |-----  |  ----
+visible|boolean|是否显示对话框|false
+sourceData|Array|级联对话框中的数据源|
+onlyRead | boolean| 是否以只读形式(查看形式)，显示级联对话框| true
+levels    | Number| 级数|
+tips      |Array|为三级选择框时，可设置不同选项（[可参看用例中的"寄，收"](./src/example/HelloWorld.vue)）待完善。|
