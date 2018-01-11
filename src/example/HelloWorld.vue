@@ -29,7 +29,7 @@ export default {
   componentName: 'HelloWorld',
   data() {
     return {
-      defaultLevals: 3,
+      defaultLevals: 1,
       dialogConfigVisible: false,
       result: {},
       logisMerchId: -1,

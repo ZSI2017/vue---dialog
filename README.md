@@ -7,16 +7,65 @@
 -  [mock.js](http://mockjs.com/) 伪造数据
 -  [Element-ui](http://element.eleme.io/#/zh-CN/component/message-box) 样式渲染
 
-使用说明:
+**使用说明:**
   - 全局安装`json-server`插件   `npm i json-server -g`
   - `cd mock` 目录，启动服务  `json-server -w mock.js`
   - `cd ..` 在 最外层目录， `npm run dev` 启动
 
+
 数据类型：
+  **配置不同levels,生成不同级选择器，对应不用的数据结构，数组对象的嵌套层级相应会改变**
+   - 一级选择器
+     ```
+       [
+         { districtName:"北京",  // 省名
+           checked:0          // 是否选中， 0 未选中， 1 选中
+         },
+         { districtName:"北京",
+           checked:0
+          },
+         { districtName:"北京",
+           checked:0
+           }
+      ]
+     ```
+   - 二级选择器
+    ```
+      [
+        { districtName:"北京",      // 省名
+          checked:0,               // 省对应的市是否全选: 0 否 ，非0 是
+          city:[{                 //  省下面的市，对应对象数组。              
+                 cityName:"北京市",
+                 checked:0,
+               },{
+                  cityName:"北京市",
+                  checked:0,
+              }]
+        }
+     ]
+    ```
+   - 三级选择器
+    ```
+    [
+      { districtName:"北京",      // 省名
+        checked:0,               // 省对应的市是否全选: 0 否 ，非0 是
+        city:[{                 //  省下面的市，对应对象数组。              
+               cityName:"北京市",
+               checked:0,
+
+             },{
+                cityName:"北京市",
+                checked:0,
+            }]
+      }
+   ]
+    ```
 
   **check:  0，代表未选中   1，代表选中了寄件    2，代表选中收件    3，代表选中了寄件和收件**
 
   具体数据格式，见[/mock/list1.js](./mock/list1.js)
+   配置不同levels,对应不用的数据结构
+
 
 两种模式（可通过本地存储或后台接口进行关联）：
 

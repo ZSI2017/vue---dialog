@@ -7,6 +7,7 @@
 
 <script type="text/javascript">
 export default {
+  name:"checkboxGroup",
   model: {
 
   },
