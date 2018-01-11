@@ -29,13 +29,13 @@ export default {
   componentName: 'HelloWorld',
   data() {
     return {
-      defaultLevals: 1,
+      defaultLevals: 3,
       dialogConfigVisible: false,
       result: {},
       logisMerchId: -1,
       isCheckServer: true,
       msg: 'Welcome to dialog',
-      tipArray: ["寄件","收件"]
+      tipArray: []
     }
   },
   methods: {
