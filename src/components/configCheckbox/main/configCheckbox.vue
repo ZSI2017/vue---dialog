@@ -22,8 +22,7 @@
         <li
           v-if='(item.check)&&onlyRead||!onlyRead'
           :class="[index ==li0&&internalLevels!==1 ?'activeClass':'','commonli-class',item.class]"
-
-          @click="li1Click($event,index,item)"
+          @click="handleLevel1Click($event,index,item)"
           v-for="(item,index) in sourceData.leveloneArray"
         >
           {{item.provinceName}}
@@ -42,7 +41,7 @@
               <li
                 v-if='((item.check||item.levelthreeArray.some(function(im){ return im.check>0}))&&onlyRead)||!onlyRead'
                 :class="[index==li1?activeClass:'', 'commonli-class']"
-                @click="li1Click2($event,item,index)"
+                @click="handleLevel2Click($event,item,index)"
                 v-for="(item,index) in list2"
                 :key="index"
                 style="position:relative"
@@ -68,7 +67,7 @@
                   >
                     </checkbox>
 
-                  <!-- <checkbox
+                    <!-- <checkbox
                     v-if="!onlyRead"
                     class="checkbox-common"
                     :label="item.cityName+'寄'"
@@ -77,7 +76,7 @@
                   >
                     {{tips[1]}}
                     </checkbox> -->
-              </li>
+                    </li>
             </checkbox-group>
           </div>
         </el-collapse-transition>
@@ -231,8 +230,8 @@ export default {
     sourceData: function(newData, oldData) {
       this.checkedData = newData.leveloneArray;
       if (!this.onlyRead) {
-        this.li1Click('event', 0, newData.leveloneArray[0]);
-        this.li1Click2('event', newData.leveloneArray[0].leveltwoArray && newData.leveloneArray[0].leveltwoArray[0], 0)
+        this.handleLevel1Click('event', 0, newData.leveloneArray[0]);
+        this.handleLevel2Click('event', newData.leveloneArray[0].leveltwoArray && newData.leveloneArray[0].leveltwoArray[0], 0)
       } else {
         let index1, index2;
         for (let i = 0; i < newData.leveloneArray.length; i++) {
@@ -241,7 +240,7 @@ export default {
             break;
           }
         }
-        this.li1Click('event', index1, newData.leveloneArray[index1]);
+        this.handleLevel1Click('event', index1, newData.leveloneArray[index1]);
         if (typeof newData.leveloneArray[index1] !== "undefined") {
           for (let k = 0; k < newData.leveloneArray[index1].leveltwoArray.length; k++) {
             if (newData.leveloneArray[index1].leveltwoArray[k].check || newData.leveloneArray[index1].leveltwoArray[k].levelthreeArray.some(function(im) {
@@ -251,7 +250,7 @@ export default {
               break;
             }
           }
-          this.li1Click2('event', newData.leveloneArray[index1].leveltwoArray[index2], index2);
+          this.handleLevel2Click('event', newData.leveloneArray[index1].leveltwoArray[index2], index2);
         }
       }
     }
@@ -272,107 +271,39 @@ export default {
       // 首先，获取到checkbox 复选框 点击之前的check 属性对应的数
       let oldChecked = this.checkedData[this.li0].leveltwoArray[index].check
       // oldChecked ： 0, 两个都没有选中   1， 选中了寄件    2， 选中了收件，   3， 选中了收件
-      //
-      if (event.target.checked) {
-    // this.checkedData[this.li0]
-     if(oldChecked === 3) {
-
-     }else if(oldChecked === 2) {
-       if(sendOrRec === 2) {
-
-       }else {
-           this.checkedData[this.li0].leveltwoArray[index].check = oldChecked+1;
-       }
-     }else if (oldChecked === 1) {
-       if(sendOrRec === 1) {
-
-       }else {
-           this.checkedData[this.li0].leveltwoArray[index].check = oldChecked+2;
-       }
-     }else if(oldChecked === 0) {
-       this.checkedData[this.li0].leveltwoArray[index].check = oldChecked+sendOrRec;
-     }
-    //  = Object.assign({
-    //   check: true
-    // }, item)
-    //  {provinceName:'',Checked:true,leveltwoArray:item}
-  } else {
-    if(oldChecked === 0) {
-
-    }else if(oldChecked === 3) {
-      this.checkedData[this.li0].leveltwoArray[index].check = oldChecked-sendOrRec;
-    }else if (oldChecked === 2) {
-      if(sendOrRec === 1) {
-
-      }else {
-          this.checkedData[this.li0].leveltwoArray[index].check = oldChecked-2;
+      this.checkedData[this.li0].leveltwoArray[index].check = event.target.checked ?
+        (oldChecked + sendOrRec) :
+        (oldChecked - sendOrRec)
+      if (this.levels < 3) {
+        return;
       }
-    }else if(oldChecked === 1) {
-       if(sendOrRec ===2) {}else{
-            this.checkedData[this.li0].leveltwoArray[index].check = oldChecked-1;
-       }
-    }
-    // this.checkedData[this.li0].leveltwoArray[index].levelthreeArray = [];
-    // this.checkedData[this.li0].leveltwoArray[index]=Object.assign({},{cityName:item.cityName,Checked:false})
-  }
-      // this.checkedData[this.li0].leveltwoArray[index].check = event.target.checked
-      //                                                         ?(oldChecked + sendOrRec)
-      //                                                         :(oldChecked - sendOrRec)
-      if(this.levels<3){return;}
       let tempArrSed = [],
-        tempArrRec = [],tempArr = [];
+        tempArrRec = [],
+        tempArr = [];
       for (let i = 0; i < item.levelthreeArray.length; i++) {
         let oldDistrictsCheck = this.checkedData[this.li0].leveltwoArray[index].levelthreeArray[i].check;
-        if(event.target.checked) {
-             if(oldDistrictsCheck === 3) {
-
-             }else if(oldDistrictsCheck === 2) {
-                 if(sendOrRec === 2) {}else{
-                   this.checkedData[this.li0].leveltwoArray[index].levelthreeArray[i].check = oldDistrictsCheck+1;
-                 }
-             } else if(oldDistrictsCheck === 1) {
-                if(sendOrRec === 1) {}else {
-                   this.checkedData[this.li0].leveltwoArray[index].levelthreeArray[i].check = oldDistrictsCheck+2;
-                }
-             }else if(oldDistrictsCheck === 0) {
-                   this.checkedData[this.li0].leveltwoArray[index].levelthreeArray[i].check = oldDistrictsCheck+sendOrRec;
-             }
-          }else {
-            if(oldDistrictsCheck === 0) {
-
-            }else if(oldDistrictsCheck === 3) {
-                this.checkedData[this.li0].leveltwoArray[index].levelthreeArray[i].check = oldDistrictsCheck-sendOrRec;
-            } else if(oldDistrictsCheck === 2) {
-               if(sendOrRec === 1) {}else {
-                  this.checkedData[this.li0].leveltwoArray[index].levelthreeArray[i].check = oldDistrictsCheck-2;
-               }
-            }else if(oldDistrictsCheck === 1) {
-                  if(sendOrRec === 2) {}else {
-                    this.checkedData[this.li0].leveltwoArray[index].levelthreeArray[i].check = oldDistrictsCheck-1;
-                  }
-            }
+        if (event.target.checked) {
+          if ((oldDistrictsCheck === 2 && sendOrRec === 1) || (oldDistrictsCheck === 1 && sendOrRec === 2) || oldDistrictsCheck === 0) {
+            this.checkedData[this.li0].leveltwoArray[index].levelthreeArray[i].check = oldDistrictsCheck + sendOrRec;
           }
+        } else {
+          if (oldDistrictsCheck === 3 || (oldDistrictsCheck === 2 && sendOrRec === 2) || (oldDistrictsCheck === 1 && sendOrRec === 1)) {
+            this.checkedData[this.li0].leveltwoArray[index].levelthreeArray[i].check = oldDistrictsCheck - sendOrRec;
+          }
+        }
 
-
-          // this.checkedData[this.li0].leveltwoArray[index].levelthreeArray[i].check = event.target.checked
-          //                                                                                ?(oldDistrictsCheck + sendOrRec)
-          //                                                                                :(oldDistrictsCheck - sendOrRec)
-
-
-
-
-          tempArrSed.push(item.levelthreeArray[i].districtName + this.tips[0]);
-          tempArrRec.push(item.levelthreeArray[i].districtName + this.tips[1]);
-          tempArr.push(item.levelthreeArray[i].districtName)
+        tempArrSed.push(item.levelthreeArray[i].districtName + this.tips[0]);
+        tempArrRec.push(item.levelthreeArray[i].districtName + this.tips[1]);
+        tempArr.push(item.levelthreeArray[i].districtName)
       }
 
-      if(this.tips.length === 0){
+      if (this.tips.length === 0) {
         if (this.checkedData[this.li0].leveltwoArray[index].check === 1) {
           this.checkedDistric = tempArr;
-        }else {
+        } else {
           this.checkedDistric = [];
         }
-      }else {
+      } else {
 
         if (this.checkedData[this.li0].leveltwoArray[index].check === 3) {
           this.checkedDistric = tempArrSed.concat(tempArrRec)
@@ -383,15 +314,12 @@ export default {
             this.checkedDistric = this.checkedDistric.filter((item) => {
               return item.indexOf(this.tips[0]) > -1
             }).concat(tempArrRec);
-            // console.log(this.checkedDistric.filter((item) => {
-            //   return item.indexOf(this.tips[0]) > -1
-            // }));
           }
         } else if (this.checkedData[this.li0].leveltwoArray[index].check === 1) {
           if (oldChecked === 3) {
             this.checkedDistric = tempArrSed;
           } else {
-            this.checkedDistric = this.checkedDistric.filter( (item) => {
+            this.checkedDistric = this.checkedDistric.filter((item) => {
               return item.indexOf(this.tips[1]) > -1
             }).concat(tempArrSed);
           }
@@ -426,42 +354,39 @@ export default {
         checkedDataDistrictNameRecLength = 0,
         checkedDataDistrictNameLength = 0;
       this.checkedDistric.forEach(function(value, index) {
-        if (value.indexOf(_self.tips[0]) >-1) {
+        if (value.indexOf(_self.tips[0]) > -1) {
           checkedDataDistrictNameSedLength++
-        }else if(value.indexOf(_self.tips[1])>-1) {
+        } else if (value.indexOf(_self.tips[1]) > -1) {
           checkedDataDistrictNameRecLength++
-        }else {
-          checkedDataDistrictNameLength ++;
+        } else {
+          checkedDataDistrictNameLength++;
         }
       })
 
       let sourceDataDistrictNameLength = this.sourceData.leveloneArray[this.li0].leveltwoArray[this.li1].levelthreeArray.length
       let oldCitysCheck = this.checkedData[this.li0].leveltwoArray[this.li1].check;
 
-     if(this.tips.length === 0){
-      if(checkedDataDistrictNameLength >= sourceDataDistrictNameLength) {
-        this.checkedData[this.li0].leveltwoArray[this.li1].check = 1;
-        if (this.checkCity.indexOf(tempCityName) < 0) this.checkCity.push(tempCityName);
-      }else {
-        this.checkedData[this.li0].leveltwoArray[this.li1].check = 0;
-        if (this.checkCity.indexOf(tempCityName) >= 0) this.checkCity.splice(this.checkCity.indexOf(tempCityName), 1);
+      if (this.tips.length === 0) {
+        if (checkedDataDistrictNameLength >= sourceDataDistrictNameLength) {
+          this.checkedData[this.li0].leveltwoArray[this.li1].check = 1;
+          if (this.checkCity.indexOf(tempCityName) < 0) this.checkCity.push(tempCityName);
+        } else {
+          this.checkedData[this.li0].leveltwoArray[this.li1].check = 0;
+          if (this.checkCity.indexOf(tempCityName) >= 0) this.checkCity.splice(this.checkCity.indexOf(tempCityName), 1);
+        }
       }
-    }
-
-      console.log(checkedDataDistrictNameSedLength);
-      console.log(sourceDataDistrictNameLength);
       if (checkedDataDistrictNameSedLength >= sourceDataDistrictNameLength) {
         // 代表已经把未覆盖区县中的数据手动全选了
         if (oldCitysCheck % 2 === 0) {
           this.checkedData[this.li0].leveltwoArray[this.li1].check = 1 + oldCitysCheck;
         }
-        if (this.checkCity.indexOf(tempCityName + ''+this.tips[0]) < 0) this.checkCity.push(tempCityName + ''+this.tips[0]);
+        if (this.checkCity.indexOf(tempCityName + '' + this.tips[0]) < 0) this.checkCity.push(tempCityName + '' + this.tips[0]);
 
       } else {
         if (oldCitysCheck % 2 === 1) {
           this.checkedData[this.li0].leveltwoArray[this.li1].check = oldCitysCheck - 1;
         }
-        if (this.checkCity.indexOf(tempCityName + ''+this.tips[0]) >= 0) this.checkCity.splice(this.checkCity.indexOf(tempCityName + ''+this.tips[0]), 1);
+        if (this.checkCity.indexOf(tempCityName + '' + this.tips[0]) >= 0) this.checkCity.splice(this.checkCity.indexOf(tempCityName + '' + this.tips[0]), 1);
       }
       // 手件地址
       if (checkedDataDistrictNameRecLength >= sourceDataDistrictNameLength) {
@@ -469,22 +394,21 @@ export default {
         if (oldCitysCheck < 2) {
           this.checkedData[this.li0].leveltwoArray[this.li1].check = 2 + oldCitysCheck;
         }
-        if (this.checkCity.indexOf(tempCityName + ''+this.tips[1]) < 0) this.checkCity.push(tempCityName + ''+this.tips[1]);
+        if (this.checkCity.indexOf(tempCityName + '' + this.tips[1]) < 0) this.checkCity.push(tempCityName + '' + this.tips[1]);
 
       } else {
         if (oldCitysCheck > 1) {
           this.checkedData[this.li0].leveltwoArray[this.li1].check = oldCitysCheck - 2;
         }
-        if (this.checkCity.indexOf(tempCityName + ''+this.tips[1]) >= 0) this.checkCity.splice(this.checkCity.indexOf(tempCityName + ''+this.tips[1]), 1);
+        if (this.checkCity.indexOf(tempCityName + '' + this.tips[1]) >= 0) this.checkCity.splice(this.checkCity.indexOf(tempCityName + '' + this.tips[1]), 1);
       }
-      console.log(this.checkedData[this.li0].leveltwoArray[this.li1].check)
     },
-    li1Click(event, index, item) {
-      if(this.internalLevels ===1&&!this.onlyRead){
-        if(item.class){
-          this.$set(item,"class",'');
-        }else {
-          this.$set(item,"class",'activeClass');
+    handleLevel1Click(event, index, item) {
+      if (this.internalLevels === 1 && !this.onlyRead) {
+        if (item.class) {
+          this.$set(item, "class", '');
+        } else {
+          this.$set(item, "class", 'activeClass');
         }
         return;
       }
@@ -503,10 +427,10 @@ export default {
           for (let k = 0; k < levels2Array.length; k++) {
             if (typeof levels2Array[k] === "object") {
               let internalItem = levels2Array[k]
-              if(internalItem.check>0){
-                if(this.tips.length === 0){
+              if (internalItem.check > 0) {
+                if (this.tips.length === 0) {
                   tempArr.push(internalItem.cityName);
-                }else {
+                } else {
                   if (internalItem.check === 3) {
                     tempArr.push(internalItem.cityName + this.tips[0]);
                     tempArr.push(internalItem.cityName + this.tips[1]);
@@ -531,7 +455,7 @@ export default {
       })
       this.showLi2 = false;
       if (!this.onlyRead) {
-        this.li1Click2('event', this.sourceData.leveloneArray[index].leveltwoArray && this.sourceData.leveloneArray[index].leveltwoArray[0], 0)
+        this.handleLevel2Click('event', this.sourceData.leveloneArray[index].leveltwoArray && this.sourceData.leveloneArray[index].leveltwoArray[0], 0)
       } else {
         let index2;
         if (typeof this.sourceData.leveloneArray[index] !== "undefined") {
@@ -543,12 +467,14 @@ export default {
               break;
             }
           }
-          this.li1Click2('event', this.sourceData.leveloneArray[index].leveltwoArray[index2], index2);
+          this.handleLevel2Click('event', this.sourceData.leveloneArray[index].leveltwoArray[index2], index2);
         }
       }
     },
-    li1Click2(event, item, index) {
-      if(this.internalLevels ===1){return }
+    handleLevel2Click(event, item, index) {
+      if (this.internalLevels === 1) {
+        return
+      }
       this.checkedDistric = [];
       this.li1 = index;
       this.showLi2 = false;
@@ -560,20 +486,20 @@ export default {
           if (levelthreeArrayArr && levelthreeArrayArr.length > 0) {
             let tempArr = [];
             for (let i = 0; i < levelthreeArrayArr.length; i++) {
-              if(levelthreeArrayArr[i].check>0){
-                  if(this.tips.length === 0){
-                    tempArr.push(levelthreeArrayArr[i].districtName);
-                  }else {
-                    if (levelthreeArrayArr[i].check === 3) {
-                      tempArr.push(levelthreeArrayArr[i].districtName + this.tips[0]);
-                      tempArr.push(levelthreeArrayArr[i].districtName + this.tips[1]);
-                    } else if (levelthreeArrayArr[i].check === 2) {
-                      tempArr.push(levelthreeArrayArr[i].districtName + this.tips[1]);
-                    } else if (levelthreeArrayArr[i].check === 1) {
-                      tempArr.push(levelthreeArrayArr[i].districtName + this.tips[0]);
-                    }
+              if (levelthreeArrayArr[i].check > 0) {
+                if (this.tips.length === 0) {
+                  tempArr.push(levelthreeArrayArr[i].districtName);
+                } else {
+                  if (levelthreeArrayArr[i].check === 3) {
+                    tempArr.push(levelthreeArrayArr[i].districtName + this.tips[0]);
+                    tempArr.push(levelthreeArrayArr[i].districtName + this.tips[1]);
+                  } else if (levelthreeArrayArr[i].check === 2) {
+                    tempArr.push(levelthreeArrayArr[i].districtName + this.tips[1]);
+                  } else if (levelthreeArrayArr[i].check === 1) {
+                    tempArr.push(levelthreeArrayArr[i].districtName + this.tips[0]);
+                  }
                 }
-             }
+              }
             }
             this.checkedDistric = tempArr;
           } else {
