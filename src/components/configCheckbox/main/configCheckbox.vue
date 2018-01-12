@@ -132,8 +132,8 @@
                   <el-tag  type="primary" v-if="onlyRead&&item.check>1&&tips[1]" >{{tips[1]}}</el-tag>
                 </span>
 
-                          </li>
-                          </checkbox-group>
+                  </li>
+              </checkbox-group>
             </div>
           </el-collapse-transition>
         </ul>
