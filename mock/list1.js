@@ -8,29 +8,29 @@ for(var i =0;i<20;i++){
   var outProvvinceArr = {
     provinceName: Mock.Random.province(),
     check:1,
-    noServiceCitys:[]
+    leveltwoArray:[]
   }
   for(var j = 0;j<5;j++){
     var cityNumber = Mock.Random.integer(1,100)*j
-    var noServiceCitysArr = {
+    var levels2Arr = {
       cityName:provvinceNumber+ "-city "+ cityNumber,
       check:1,
-      noServiceDistricts:[]
+      levelthreeArray:[]
     };
      for(var k = 0;k<5;k++){
-       var noServiceDistrictsArr = {
+       var levelthreeArrayArr = {
           districtName:k+" district "+cityNumber,
           check:1,
        };
-       noServiceCitysArr.noServiceDistricts.push(noServiceDistrictsArr);
+       levels2Arr.levelthreeArray.push(levelthreeArrayArr);
      }
-     outProvvinceArr.noServiceCitys.push(noServiceCitysArr);
+     outProvvinceArr.leveltwoArray.push(levels2Arr);
   }
   provinces.push(outProvvinceArr)
 }
 
 var result  ={
-  noProvinces:provinces,
+  leveloneArray:provinces,
   check:true
 }
 

@@ -24,7 +24,7 @@
           :class="[index ==li0&&internalLevels!==1 ?'activeClass':'','commonli-class',item.class]"
 
           @click="li1Click($event,index,item)"
-          v-for="(item,index) in sourceData.noProvinces"
+          v-for="(item,index) in sourceData.leveloneArray"
         >
           {{item.provinceName}}
           </li>
@@ -40,7 +40,7 @@
           <div v-if="showLi">
             <checkbox-group v-model="checkCity">
               <li
-                v-if='((item.check||item.noServiceDistricts.some(function(im){ return im.check>0}))&&onlyRead)||!onlyRead'
+                v-if='((item.check||item.levelthreeArray.some(function(im){ return im.check>0}))&&onlyRead)||!onlyRead'
                 :class="[index==li1?activeClass:'', 'commonli-class']"
                 @click="li1Click2($event,item,index)"
                 v-for="(item,index) in list2"
@@ -229,36 +229,36 @@ export default {
       this.showLi2 = false;
     },
     sourceData: function(newData, oldData) {
-      this.checkedData = newData.noProvinces;
+      this.checkedData = newData.leveloneArray;
       if (!this.onlyRead) {
-        this.li1Click('event', 0, newData.noProvinces[0]);
-        this.li1Click2('event', newData.noProvinces[0].noServiceCitys && newData.noProvinces[0].noServiceCitys[0], 0)
+        this.li1Click('event', 0, newData.leveloneArray[0]);
+        this.li1Click2('event', newData.leveloneArray[0].leveltwoArray && newData.leveloneArray[0].leveltwoArray[0], 0)
       } else {
         let index1, index2;
-        for (let i = 0; i < newData.noProvinces.length; i++) {
-          if (newData.noProvinces[i].check) {
+        for (let i = 0; i < newData.leveloneArray.length; i++) {
+          if (newData.leveloneArray[i].check) {
             index1 = i;
             break;
           }
         }
-        this.li1Click('event', index1, newData.noProvinces[index1]);
-        if (typeof newData.noProvinces[index1] !== "undefined") {
-          for (let k = 0; k < newData.noProvinces[index1].noServiceCitys.length; k++) {
-            if (newData.noProvinces[index1].noServiceCitys[k].check || newData.noProvinces[index1].noServiceCitys[k].noServiceDistricts.some(function(im) {
+        this.li1Click('event', index1, newData.leveloneArray[index1]);
+        if (typeof newData.leveloneArray[index1] !== "undefined") {
+          for (let k = 0; k < newData.leveloneArray[index1].leveltwoArray.length; k++) {
+            if (newData.leveloneArray[index1].leveltwoArray[k].check || newData.leveloneArray[index1].leveltwoArray[k].levelthreeArray.some(function(im) {
                 return im.check > 0
               })) {
               index2 = k;
               break;
             }
           }
-          this.li1Click2('event', newData.noProvinces[index1].noServiceCitys[index2], index2);
+          this.li1Click2('event', newData.leveloneArray[index1].leveltwoArray[index2], index2);
         }
       }
     }
   },
   methods: {
     /**
-     *  点击城市全选，将城市noServiceCitys 数组中对应的项，改变check属性，分别有0,1,2,3 四种情况，
+     *  点击城市全选，将城市leveltwoArray 数组中对应的项，改变check属性，分别有0,1,2,3 四种情况，
      *  并且改变 checkedDistric 数组中的的区县内容，相应的全部加入，活着 设置为空，
      *  @method handleCheckAllChange
      *  @param  {Number}             index     获取到点击全选的是哪一项
@@ -269,11 +269,8 @@ export default {
      **/
     handleCheckAllChange(index, item, event, sendOrRec) {
       if (this.onlyRead) return;
-      console.log(this.checkedData[this.li0].noServiceCitys[index])
       // 首先，获取到checkbox 复选框 点击之前的check 属性对应的数
-      let oldChecked = this.checkedData[this.li0].noServiceCitys[index].check
-      console.log(this.checkedDistric)
-      console.log(oldChecked)
+      let oldChecked = this.checkedData[this.li0].leveltwoArray[index].check
       // oldChecked ： 0, 两个都没有选中   1， 选中了寄件    2， 选中了收件，   3， 选中了收件
       //
       if (event.target.checked) {
@@ -284,102 +281,102 @@ export default {
        if(sendOrRec === 2) {
 
        }else {
-           this.checkedData[this.li0].noServiceCitys[index].check = oldChecked+1;
+           this.checkedData[this.li0].leveltwoArray[index].check = oldChecked+1;
        }
      }else if (oldChecked === 1) {
        if(sendOrRec === 1) {
 
        }else {
-           this.checkedData[this.li0].noServiceCitys[index].check = oldChecked+2;
+           this.checkedData[this.li0].leveltwoArray[index].check = oldChecked+2;
        }
      }else if(oldChecked === 0) {
-       this.checkedData[this.li0].noServiceCitys[index].check = oldChecked+sendOrRec;
+       this.checkedData[this.li0].leveltwoArray[index].check = oldChecked+sendOrRec;
      }
     //  = Object.assign({
     //   check: true
     // }, item)
-    //  {provinceName:'',Checked:true,noServiceCitys:item}
+    //  {provinceName:'',Checked:true,leveltwoArray:item}
   } else {
     if(oldChecked === 0) {
 
     }else if(oldChecked === 3) {
-      this.checkedData[this.li0].noServiceCitys[index].check = oldChecked-sendOrRec;
+      this.checkedData[this.li0].leveltwoArray[index].check = oldChecked-sendOrRec;
     }else if (oldChecked === 2) {
       if(sendOrRec === 1) {
 
       }else {
-          this.checkedData[this.li0].noServiceCitys[index].check = oldChecked-2;
+          this.checkedData[this.li0].leveltwoArray[index].check = oldChecked-2;
       }
     }else if(oldChecked === 1) {
        if(sendOrRec ===2) {}else{
-            this.checkedData[this.li0].noServiceCitys[index].check = oldChecked-1;
+            this.checkedData[this.li0].leveltwoArray[index].check = oldChecked-1;
        }
     }
-    // this.checkedData[this.li0].noServiceCitys[index].noServiceDistricts = [];
-    // this.checkedData[this.li0].noServiceCitys[index]=Object.assign({},{cityName:item.cityName,Checked:false})
+    // this.checkedData[this.li0].leveltwoArray[index].levelthreeArray = [];
+    // this.checkedData[this.li0].leveltwoArray[index]=Object.assign({},{cityName:item.cityName,Checked:false})
   }
-      // this.checkedData[this.li0].noServiceCitys[index].check = event.target.checked
+      // this.checkedData[this.li0].leveltwoArray[index].check = event.target.checked
       //                                                         ?(oldChecked + sendOrRec)
       //                                                         :(oldChecked - sendOrRec)
       if(this.levels<3){return;}
       let tempArrSed = [],
         tempArrRec = [],tempArr = [];
-      for (let i = 0; i < item.noServiceDistricts.length; i++) {
-        let oldDistrictsCheck = this.checkedData[this.li0].noServiceCitys[index].noServiceDistricts[i].check;
+      for (let i = 0; i < item.levelthreeArray.length; i++) {
+        let oldDistrictsCheck = this.checkedData[this.li0].leveltwoArray[index].levelthreeArray[i].check;
         if(event.target.checked) {
              if(oldDistrictsCheck === 3) {
 
              }else if(oldDistrictsCheck === 2) {
                  if(sendOrRec === 2) {}else{
-                   this.checkedData[this.li0].noServiceCitys[index].noServiceDistricts[i].check = oldDistrictsCheck+1;
+                   this.checkedData[this.li0].leveltwoArray[index].levelthreeArray[i].check = oldDistrictsCheck+1;
                  }
              } else if(oldDistrictsCheck === 1) {
                 if(sendOrRec === 1) {}else {
-                   this.checkedData[this.li0].noServiceCitys[index].noServiceDistricts[i].check = oldDistrictsCheck+2;
+                   this.checkedData[this.li0].leveltwoArray[index].levelthreeArray[i].check = oldDistrictsCheck+2;
                 }
              }else if(oldDistrictsCheck === 0) {
-                   this.checkedData[this.li0].noServiceCitys[index].noServiceDistricts[i].check = oldDistrictsCheck+sendOrRec;
+                   this.checkedData[this.li0].leveltwoArray[index].levelthreeArray[i].check = oldDistrictsCheck+sendOrRec;
              }
           }else {
             if(oldDistrictsCheck === 0) {
 
             }else if(oldDistrictsCheck === 3) {
-                this.checkedData[this.li0].noServiceCitys[index].noServiceDistricts[i].check = oldDistrictsCheck-sendOrRec;
+                this.checkedData[this.li0].leveltwoArray[index].levelthreeArray[i].check = oldDistrictsCheck-sendOrRec;
             } else if(oldDistrictsCheck === 2) {
                if(sendOrRec === 1) {}else {
-                  this.checkedData[this.li0].noServiceCitys[index].noServiceDistricts[i].check = oldDistrictsCheck-2;
+                  this.checkedData[this.li0].leveltwoArray[index].levelthreeArray[i].check = oldDistrictsCheck-2;
                }
             }else if(oldDistrictsCheck === 1) {
                   if(sendOrRec === 2) {}else {
-                    this.checkedData[this.li0].noServiceCitys[index].noServiceDistricts[i].check = oldDistrictsCheck-1;
+                    this.checkedData[this.li0].leveltwoArray[index].levelthreeArray[i].check = oldDistrictsCheck-1;
                   }
             }
           }
 
 
-          // this.checkedData[this.li0].noServiceCitys[index].noServiceDistricts[i].check = event.target.checked
+          // this.checkedData[this.li0].leveltwoArray[index].levelthreeArray[i].check = event.target.checked
           //                                                                                ?(oldDistrictsCheck + sendOrRec)
           //                                                                                :(oldDistrictsCheck - sendOrRec)
 
 
 
 
-          tempArrSed.push(item.noServiceDistricts[i].districtName + this.tips[0]);
-          tempArrRec.push(item.noServiceDistricts[i].districtName + this.tips[1]);
-          tempArr.push(item.noServiceDistricts[i].districtName)
+          tempArrSed.push(item.levelthreeArray[i].districtName + this.tips[0]);
+          tempArrRec.push(item.levelthreeArray[i].districtName + this.tips[1]);
+          tempArr.push(item.levelthreeArray[i].districtName)
       }
 
       if(this.tips.length === 0){
-        if (this.checkedData[this.li0].noServiceCitys[index].check === 1) {
+        if (this.checkedData[this.li0].leveltwoArray[index].check === 1) {
           this.checkedDistric = tempArr;
         }else {
           this.checkedDistric = [];
         }
       }else {
 
-        if (this.checkedData[this.li0].noServiceCitys[index].check === 3) {
+        if (this.checkedData[this.li0].leveltwoArray[index].check === 3) {
           this.checkedDistric = tempArrSed.concat(tempArrRec)
-        } else if (this.checkedData[this.li0].noServiceCitys[index].check === 2) {
+        } else if (this.checkedData[this.li0].leveltwoArray[index].check === 2) {
           if (oldChecked === 3) {
             this.checkedDistric = tempArrRec;
           } else {
@@ -390,7 +387,7 @@ export default {
             //   return item.indexOf(this.tips[0]) > -1
             // }));
           }
-        } else if (this.checkedData[this.li0].noServiceCitys[index].check === 1) {
+        } else if (this.checkedData[this.li0].leveltwoArray[index].check === 1) {
           if (oldChecked === 3) {
             this.checkedDistric = tempArrSed;
           } else {
@@ -398,8 +395,7 @@ export default {
               return item.indexOf(this.tips[1]) > -1
             }).concat(tempArrSed);
           }
-        } else if (this.checkedData[this.li0].noServiceCitys[index].check === 0) {
-          console.log("into oldChecked === 0")
+        } else if (this.checkedData[this.li0].leveltwoArray[index].check === 0) {
           if (oldChecked === 2) {
             this.checkedDistric = this.checkedDistric.filter((item) => {
               return item.indexOf(this.tips[0]) > -1
@@ -416,19 +412,15 @@ export default {
     },
     handleCheckbox(index, event, sendOrRec) {
       if (this.onlyRead) return;
-      let oldCheck = this.checkedData[this.li0].noServiceCitys[this.li1].noServiceDistricts[index].check
+      let oldCheck = this.checkedData[this.li0].leveltwoArray[this.li1].levelthreeArray[index].check
 
-      this.checkedData[this.li0].noServiceCitys[this.li1].noServiceDistricts[index].check = event.target.checked ? (oldCheck + sendOrRec) : (oldCheck - sendOrRec);
-      console.log("checkbox")
-    console.log(this.checkedData[this.li0].noServiceCitys[this.li1].noServiceDistricts[index].check)
-      console.log(this.checkedData[this.li0].noServiceCitys[this.li1].noServiceDistricts);
+      this.checkedData[this.li0].leveltwoArray[this.li1].levelthreeArray[index].check = event.target.checked ? (oldCheck + sendOrRec) : (oldCheck - sendOrRec);
     },
     // 区县选择 多选框
     handleDistricChange() {
-        console.log(this.checkedData[this.li0].noServiceCitys[this.li1].check)
       if (this.onlyRead) return;
       //  记录对应的数据到指定的数据结构当中
-      let tempCityName = this.sourceData.noProvinces[this.li0].noServiceCitys[this.li1].cityName;
+      let tempCityName = this.sourceData.leveloneArray[this.li0].leveltwoArray[this.li1].cityName;
       let _self = this;
       let checkedDataDistrictNameSedLength = 0,
         checkedDataDistrictNameRecLength = 0,
@@ -443,15 +435,15 @@ export default {
         }
       })
 
-      let sourceDataDistrictNameLength = this.sourceData.noProvinces[this.li0].noServiceCitys[this.li1].noServiceDistricts.length
-      let oldCitysCheck = this.checkedData[this.li0].noServiceCitys[this.li1].check;
+      let sourceDataDistrictNameLength = this.sourceData.leveloneArray[this.li0].leveltwoArray[this.li1].levelthreeArray.length
+      let oldCitysCheck = this.checkedData[this.li0].leveltwoArray[this.li1].check;
 
      if(this.tips.length === 0){
       if(checkedDataDistrictNameLength >= sourceDataDistrictNameLength) {
-        this.checkedData[this.li0].noServiceCitys[this.li1].check = 1;
+        this.checkedData[this.li0].leveltwoArray[this.li1].check = 1;
         if (this.checkCity.indexOf(tempCityName) < 0) this.checkCity.push(tempCityName);
       }else {
-        this.checkedData[this.li0].noServiceCitys[this.li1].check = 0;
+        this.checkedData[this.li0].leveltwoArray[this.li1].check = 0;
         if (this.checkCity.indexOf(tempCityName) >= 0) this.checkCity.splice(this.checkCity.indexOf(tempCityName), 1);
       }
     }
@@ -461,13 +453,13 @@ export default {
       if (checkedDataDistrictNameSedLength >= sourceDataDistrictNameLength) {
         // 代表已经把未覆盖区县中的数据手动全选了
         if (oldCitysCheck % 2 === 0) {
-          this.checkedData[this.li0].noServiceCitys[this.li1].check = 1 + oldCitysCheck;
+          this.checkedData[this.li0].leveltwoArray[this.li1].check = 1 + oldCitysCheck;
         }
         if (this.checkCity.indexOf(tempCityName + ''+this.tips[0]) < 0) this.checkCity.push(tempCityName + ''+this.tips[0]);
 
       } else {
         if (oldCitysCheck % 2 === 1) {
-          this.checkedData[this.li0].noServiceCitys[this.li1].check = oldCitysCheck - 1;
+          this.checkedData[this.li0].leveltwoArray[this.li1].check = oldCitysCheck - 1;
         }
         if (this.checkCity.indexOf(tempCityName + ''+this.tips[0]) >= 0) this.checkCity.splice(this.checkCity.indexOf(tempCityName + ''+this.tips[0]), 1);
       }
@@ -475,17 +467,17 @@ export default {
       if (checkedDataDistrictNameRecLength >= sourceDataDistrictNameLength) {
         // 代表已经把未覆盖区县中的数据手动全选了
         if (oldCitysCheck < 2) {
-          this.checkedData[this.li0].noServiceCitys[this.li1].check = 2 + oldCitysCheck;
+          this.checkedData[this.li0].leveltwoArray[this.li1].check = 2 + oldCitysCheck;
         }
         if (this.checkCity.indexOf(tempCityName + ''+this.tips[1]) < 0) this.checkCity.push(tempCityName + ''+this.tips[1]);
 
       } else {
         if (oldCitysCheck > 1) {
-          this.checkedData[this.li0].noServiceCitys[this.li1].check = oldCitysCheck - 2;
+          this.checkedData[this.li0].leveltwoArray[this.li1].check = oldCitysCheck - 2;
         }
         if (this.checkCity.indexOf(tempCityName + ''+this.tips[1]) >= 0) this.checkCity.splice(this.checkCity.indexOf(tempCityName + ''+this.tips[1]), 1);
       }
-      console.log(this.checkedData[this.li0].noServiceCitys[this.li1].check)
+      console.log(this.checkedData[this.li0].leveltwoArray[this.li1].check)
     },
     li1Click(event, index, item) {
       if(this.internalLevels ===1&&!this.onlyRead){
@@ -503,21 +495,21 @@ export default {
         this.checkedData[this.li0] = this.checkedData[this.li0] ?
           this.checkedData[this.li0] : {
             provinceName: item.provinceName,
-            noServiceCitys: []
+            leveltwoArray: []
           };
-        var noServiceCitysArr = this.checkedData[index].noServiceCitys
-        if (noServiceCitysArr.length > 0) {
+        var levels2Array = this.checkedData[index].leveltwoArray
+        if (levels2Array.length > 0) {
           let tempArr = [];
-          for (let k = 0; k < noServiceCitysArr.length; k++) {
-            if (typeof noServiceCitysArr[k] === "object") {
-              let internalItem = noServiceCitysArr[k]
+          for (let k = 0; k < levels2Array.length; k++) {
+            if (typeof levels2Array[k] === "object") {
+              let internalItem = levels2Array[k]
               if(internalItem.check>0){
                 if(this.tips.length === 0){
                   tempArr.push(internalItem.cityName);
                 }else {
                   if (internalItem.check === 3) {
                     tempArr.push(internalItem.cityName + this.tips[0]);
-                    tempArr.push(internalItem.cityName + this.tops[1]);
+                    tempArr.push(internalItem.cityName + this.tips[1]);
                   } else if (internalItem.check === 2) {
                     tempArr.push(internalItem.cityName + this.tips[1]);
                   } else if (internalItem.check === 1) {
@@ -533,25 +525,25 @@ export default {
         }
       }
 
-      this.list2 = this.sourceData.noProvinces[index].noServiceCitys;
+      this.list2 = this.sourceData.leveloneArray[index].leveltwoArray;
       this.$nextTick(function() {
         this.showLi = true;
       })
       this.showLi2 = false;
       if (!this.onlyRead) {
-        this.li1Click2('event', this.sourceData.noProvinces[index].noServiceCitys && this.sourceData.noProvinces[index].noServiceCitys[0], 0)
+        this.li1Click2('event', this.sourceData.leveloneArray[index].leveltwoArray && this.sourceData.leveloneArray[index].leveltwoArray[0], 0)
       } else {
         let index2;
-        if (typeof this.sourceData.noProvinces[index] !== "undefined") {
-          for (let k = 0; k < this.sourceData.noProvinces[index].noServiceCitys.length; k++) {
-            if (this.sourceData.noProvinces[index].noServiceCitys[k].check || this.sourceData.noProvinces[index].noServiceCitys[k].noServiceDistricts.some(function(im) {
+        if (typeof this.sourceData.leveloneArray[index] !== "undefined") {
+          for (let k = 0; k < this.sourceData.leveloneArray[index].leveltwoArray.length; k++) {
+            if (this.sourceData.leveloneArray[index].leveltwoArray[k].check || this.sourceData.leveloneArray[index].leveltwoArray[k].levelthreeArray.some(function(im) {
                 return im.check > 0
               })) {
               index2 = k;
               break;
             }
           }
-          this.li1Click2('event', this.sourceData.noProvinces[index].noServiceCitys[index2], index2);
+          this.li1Click2('event', this.sourceData.leveloneArray[index].leveltwoArray[index2], index2);
         }
       }
     },
@@ -560,40 +552,37 @@ export default {
       this.checkedDistric = [];
       this.li1 = index;
       this.showLi2 = false;
-      this.list3 = item.noServiceDistricts;
+      this.list3 = item.levelthreeArray;
       //  console.log(this.checkedData);
       if (!this.onlyRead) {
-        if (Object.prototype.toString.call(this.checkedData[this.li0].noServiceCitys[index]) === "[object Object]") {
-          var noServiceDistrictsArr = this.checkedData[this.li0].noServiceCitys[index].noServiceDistricts;
-          console.log(noServiceDistrictsArr)
-          if (noServiceDistrictsArr && noServiceDistrictsArr.length > 0) {
+        if (Object.prototype.toString.call(this.checkedData[this.li0].leveltwoArray[index]) === "[object Object]") {
+          var levelthreeArrayArr = this.checkedData[this.li0].leveltwoArray[index].levelthreeArray;
+          if (levelthreeArrayArr && levelthreeArrayArr.length > 0) {
             let tempArr = [];
-            for (let i = 0; i < noServiceDistrictsArr.length; i++) {
-              if(noServiceDistrictsArr[i].check>0){
+            for (let i = 0; i < levelthreeArrayArr.length; i++) {
+              if(levelthreeArrayArr[i].check>0){
                   if(this.tips.length === 0){
-                    tempArr.push(noServiceDistrictsArr[i].districtName);
+                    tempArr.push(levelthreeArrayArr[i].districtName);
                   }else {
-                    if (noServiceDistrictsArr[i].check === 3) {
-                      tempArr.push(noServiceDistrictsArr[i].districtName + this.tips[0]);
-                      tempArr.push(noServiceDistrictsArr[i].districtName + this.tips[1]);
-                    } else if (noServiceDistrictsArr[i].check === 2) {
-                      tempArr.push(noServiceDistrictsArr[i].districtName + this.tips[1]);
-                    } else if (noServiceDistrictsArr[i].check === 1) {
-                      tempArr.push(noServiceDistrictsArr[i].districtName + this.tips[0]);
+                    if (levelthreeArrayArr[i].check === 3) {
+                      tempArr.push(levelthreeArrayArr[i].districtName + this.tips[0]);
+                      tempArr.push(levelthreeArrayArr[i].districtName + this.tips[1]);
+                    } else if (levelthreeArrayArr[i].check === 2) {
+                      tempArr.push(levelthreeArrayArr[i].districtName + this.tips[1]);
+                    } else if (levelthreeArrayArr[i].check === 1) {
+                      tempArr.push(levelthreeArrayArr[i].districtName + this.tips[0]);
                     }
                 }
              }
             }
             this.checkedDistric = tempArr;
           } else {
-            this.checkedData[this.li0].noServiceCitys[index].noServiceDistricts = [];
+            this.checkedData[this.li0].leveltwoArray[index].levelthreeArray = [];
             this.checkedDistric = [];
           }
         } else {
-          this.checkedData[this.li0].noServiceCitys[index] = {};
+          this.checkedData[this.li0].leveltwoArray[index] = {};
         }
-        console.log("li1click2")
-        console.log(this.checkedDistric)
       }
       this.$nextTick(function() {
         this.showLi2 = true;
