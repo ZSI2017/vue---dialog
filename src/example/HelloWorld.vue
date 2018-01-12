@@ -9,6 +9,7 @@
   <h2 @click="toggleSeeDialog">点击打开弹窗-查看模式</h2>
   <h2 @click="toggleEditDialog">点击打开弹窗-编辑模式</h2>
 
+
   <config-checkbox
     :visible="dialogConfigVisible"
     :sourceData="result"
@@ -17,9 +18,7 @@
     :tips="tipArray"
     @listenToConfig="changeConfigVisible"
   > </config-checkbox>
-
-
-    </div>
+ </div>
 </template>
 
 <script>

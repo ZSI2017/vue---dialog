@@ -145,4 +145,4 @@ visible|boolean|是否显示对话框|false
 sourceData|Array|级联对话框中的数据源|
 onlyRead | boolean| 是否以只读形式(查看形式)，显示级联对话框| true
 levels    | Number| 级数|
-tips      |Array|为三级选择框时，可设置不同选项（[可参看用例中的"寄，收"](./src/example/HelloWorld.vue)）待完善。|
+tips      |Array|为三级选择框时，可设置不同选项（[可参看用例中的"寄件","收件"](./src/example/HelloWorld.vue)）待完善。|
