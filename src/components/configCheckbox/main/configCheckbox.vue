@@ -19,15 +19,26 @@
         class="ul-block"
         v-if="internalVisible"
       >
-        <li
-          v-if='(item.check)&&onlyRead||!onlyRead'
-          :class="[index ==li0&&internalLevels!==1 ?'activeClass':'','commonli-class',item.class]"
-          @click="handleLevel1Click($event,index,item)"
-          v-for="(item,index) in sourceData.leveloneArray"
-        >
-          {{item.provinceName}}
-          </li>
-          </ul>
+        <checkbox-group v-model="checkLevelone">
+          <label
+            v-if='(item.check)&&onlyRead||!onlyRead'
+            :class="[index ==li0 ?'activeClass':'','commonli-class']"
+            @click="handleLevel1Click($event,index,item)"
+            v-for="(item,index) in sourceData.leveloneArray"
+            :for="item.leveloneValue"
+          >
+            <span>{{item.leveloneValue}}</span>
+            <checkbox
+              v-if="!onlyRead&&internalLevels===1"
+              class="checkbox-common"
+              :label="item.leveloneValue"
+              :key="item.leveloneValue"
+              @change="handleleveloneChange(index,item,$event)"
+            >
+              </checkbox>
+              </label>
+        </checkbox-group>
+        </ul>
     </el-col>
     <el-col
       :span="internalLevels ==2?12:9"
@@ -39,20 +50,20 @@
           <div v-if="showLi">
             <checkbox-group v-model="checkCity">
               <li
-                v-if='((item.check||item.levelthreeArray.some(function(im){ return im.check>0}))&&onlyRead)||!onlyRead'
+                v-if='((item.check|| (internalLevels>2&&item.levelthreeArray.some(function(im){ return im.check>0})) )&&onlyRead)||!onlyRead'
                 :class="[index==li1?activeClass:'', 'commonli-class']"
                 @click="handleLevel2Click($event,item,index)"
                 v-for="(item,index) in list2"
                 :key="index"
                 style="position:relative"
               >
-                <span class="city-span">{{item.cityName}}</span>
+                <span class="city-span">{{item.leveltwovalue}}</span>
                 <checkbox
                   v-for="(itm,idx) in tips"
                   v-if="!onlyRead"
                   class="checkbox-common"
-                  :label="item.cityName+itm"
-                  :key="item.cityName+itm"
+                  :label="item.leveltwovalue+itm"
+                  :key="item.leveltwovalue+itm"
                   @change="handleCheckAllChange(index,item,$event,idx+1)"
                 >
                   {{itm}}
@@ -61,21 +72,11 @@
                   <checkbox
                     v-if="!onlyRead&&tips.length == 0"
                     class="checkbox-common"
-                    :label="item.cityName"
-                    :key="item.cityName"
+                    :label="item.leveltwovalue"
+                    :key="item.leveltwovalue"
                     @change="handleCheckAllChange(index,item,$event,1)"
                   >
                     </checkbox>
-
-                    <!-- <checkbox
-                    v-if="!onlyRead"
-                    class="checkbox-common"
-                    :label="item.cityName+'寄'"
-                    :key="item.cityName+'寄件'"
-                    @change="handleCheckAllChange(index,item,$event,1)"
-                  >
-                    {{tips[1]}}
-                    </checkbox> -->
                     </li>
             </checkbox-group>
           </div>
@@ -104,36 +105,36 @@
                     class="distric-span"
                     v-if="!onlyRead"
                   >
-                    {{item.districtName}}
+                    {{item.levelthreeValue}}
                     </span>
                     <!-- style="padding-left:10px;" -->
                     <checkbox
                       v-for="(itm,idx) in tips"
                       v-if="!onlyRead"
-                      :label="item.districtName+itm"
+                      :label="item.levelthreeValue+itm"
                       @change="handleCheckbox(index,$event,idx+1)"
-                      :key="item.districtName+itm"
+                      :key="item.levelthreeValue+itm"
                     >
                       {{itm}}
                       </checkbox>
                       <checkbox
                         v-if="!onlyRead&&tips.length === 0"
-                        :label="item.districtName"
+                        :label="item.levelthreeValue"
                         @change="handleCheckbox(index,$event,1)"
-                        :key="item.districtName"
+                        :key="item.levelthreeValue"
                       >
                         </checkbox>
                         <span
                           v-if="onlyRead"
                           class="levels3-class"
-                        >{{item.districtName}}</span>
+                        >{{item.levelthreeValue}}</span>
                           <span style="display:inline-block;width:100px;text-align:left">
                   <el-tag  type="primary" v-if="onlyRead&&item.check%2===1&&tips[0]" >{{tips[0]}}</el-tag>
                   <el-tag  type="primary" v-if="onlyRead&&item.check>1&&tips[1]" >{{tips[1]}}</el-tag>
                 </span>
 
-                  </li>
-              </checkbox-group>
+                          </li>
+                          </checkbox-group>
             </div>
           </el-collapse-transition>
         </ul>
@@ -200,12 +201,14 @@ export default {
       checkedDistric: [],
       checkedData: [],
       checkCity: [],
+      checkLevelone: [],
       checkAll: [],
       districChecked: false,
       isIndeterminate: [] // 表示 城市全选框的 不确定状态;
     }
   },
   created() {},
+  mounted() {},
   computed: {
     internalVisible: {
       get: function() {
@@ -229,6 +232,10 @@ export default {
     },
     sourceData: function(newData, oldData) {
       this.checkedData = newData.leveloneArray;
+      if (this.levels === 1) {
+        this.initLevelsoneCheck();
+        return;
+      }
       if (!this.onlyRead) {
         this.handleLevel1Click('event', 0, newData.leveloneArray[0]);
         this.handleLevel2Click('event', newData.leveloneArray[0].leveltwoArray && newData.leveloneArray[0].leveltwoArray[0], 0)
@@ -256,6 +263,18 @@ export default {
     }
   },
   methods: {
+
+    handleleveloneChange(index, item, event) {
+      if (this.onlyRead) return;
+      this.checkedData[index].check = event.target.checked ? 1 : 0;
+    },
+    initLevelsoneCheck() {
+      this.checkedData.forEach((item, idx) => {
+        if (item.check === 1) {
+          this.checkLevelone.push(item.leveloneValue);
+        }
+      })
+    },
     /**
      *  点击城市全选，将城市leveltwoArray 数组中对应的项，改变check属性，分别有0,1,2,3 四种情况，
      *  并且改变 checkedDistric 数组中的的区县内容，相应的全部加入，活着 设置为空，
@@ -292,9 +311,9 @@ export default {
           }
         }
 
-        tempArrSed.push(item.levelthreeArray[i].districtName + this.tips[0]);
-        tempArrRec.push(item.levelthreeArray[i].districtName + this.tips[1]);
-        tempArr.push(item.levelthreeArray[i].districtName)
+        tempArrSed.push(item.levelthreeArray[i].levelthreeValue + this.tips[0]);
+        tempArrRec.push(item.levelthreeArray[i].levelthreeValue + this.tips[1]);
+        tempArr.push(item.levelthreeArray[i].levelthreeValue)
       }
 
       if (this.tips.length === 0) {
@@ -348,7 +367,7 @@ export default {
     handleDistricChange() {
       if (this.onlyRead) return;
       //  记录对应的数据到指定的数据结构当中
-      let tempCityName = this.sourceData.leveloneArray[this.li0].leveltwoArray[this.li1].cityName;
+      let tempCityName = this.sourceData.leveloneArray[this.li0].leveltwoArray[this.li1].leveltwovalue;
       let _self = this;
       let checkedDataDistrictNameSedLength = 0,
         checkedDataDistrictNameRecLength = 0,
@@ -404,21 +423,21 @@ export default {
       }
     },
     handleLevel1Click(event, index, item) {
-      if (this.internalLevels === 1 && !this.onlyRead) {
-        if (item.class) {
-          this.$set(item, "class", '');
-        } else {
-          this.$set(item, "class", 'activeClass');
-        }
-        return;
-      }
+      // if (this.internalLevels === 1 && !this.onlyRead) {
+      //   if (item.class) {
+      //     this.$set(item, "class", '');
+      //   } else {
+      //     this.$set(item, "class", 'activeClass');
+      //   }
+      //   return;
+      // }
       this.li0 = index;
       this.showLi = false;
       // console.log(this.checkedData);
       if (!this.onlyRead) {
         this.checkedData[this.li0] = this.checkedData[this.li0] ?
           this.checkedData[this.li0] : {
-            provinceName: item.provinceName,
+            leveloneValue: item.leveloneValue,
             leveltwoArray: []
           };
         var levels2Array = this.checkedData[index].leveltwoArray
@@ -429,15 +448,15 @@ export default {
               let internalItem = levels2Array[k]
               if (internalItem.check > 0) {
                 if (this.tips.length === 0) {
-                  tempArr.push(internalItem.cityName);
+                  tempArr.push(internalItem.leveltwovalue);
                 } else {
                   if (internalItem.check === 3) {
-                    tempArr.push(internalItem.cityName + this.tips[0]);
-                    tempArr.push(internalItem.cityName + this.tips[1]);
+                    tempArr.push(internalItem.leveltwovalue + this.tips[0]);
+                    tempArr.push(internalItem.leveltwovalue + this.tips[1]);
                   } else if (internalItem.check === 2) {
-                    tempArr.push(internalItem.cityName + this.tips[1]);
+                    tempArr.push(internalItem.leveltwovalue + this.tips[1]);
                   } else if (internalItem.check === 1) {
-                    tempArr.push(internalItem.cityName + this.tips[0]);
+                    tempArr.push(internalItem.leveltwovalue + this.tips[0]);
                   }
                 }
               }
@@ -488,15 +507,15 @@ export default {
             for (let i = 0; i < levelthreeArrayArr.length; i++) {
               if (levelthreeArrayArr[i].check > 0) {
                 if (this.tips.length === 0) {
-                  tempArr.push(levelthreeArrayArr[i].districtName);
+                  tempArr.push(levelthreeArrayArr[i].levelthreeValue);
                 } else {
                   if (levelthreeArrayArr[i].check === 3) {
-                    tempArr.push(levelthreeArrayArr[i].districtName + this.tips[0]);
-                    tempArr.push(levelthreeArrayArr[i].districtName + this.tips[1]);
+                    tempArr.push(levelthreeArrayArr[i].levelthreeValue + this.tips[0]);
+                    tempArr.push(levelthreeArrayArr[i].levelthreeValue + this.tips[1]);
                   } else if (levelthreeArrayArr[i].check === 2) {
-                    tempArr.push(levelthreeArrayArr[i].districtName + this.tips[1]);
+                    tempArr.push(levelthreeArrayArr[i].levelthreeValue + this.tips[1]);
                   } else if (levelthreeArrayArr[i].check === 1) {
-                    tempArr.push(levelthreeArrayArr[i].districtName + this.tips[0]);
+                    tempArr.push(levelthreeArrayArr[i].levelthreeValue + this.tips[0]);
                   }
                 }
               }
@@ -523,13 +542,18 @@ export default {
     handleSave() {
       this.internalVisible = false;
       this.fullscreenLoading = true;
+      localStorage.setItem("sourceData", JSON.stringify({
+        leveloneArray: this.checkedData
+      }));
       setTimeout(() => {
         this.fullscreenLoading = false;
+        this.internalVisible = false;
+        this.$emit("listenToConfig", false)
         this.$message({
           message: '保存成功',
           type: 'success'
         });
-      }, 1000)
+      }, 600)
     },
     handleCancel() {
       this.internalVisible = false;
@@ -563,6 +587,7 @@ export default {
         font-weight: bold;
     }
     .commonli-class {
+        display: block;
         text-align: center;
         list-style: none;
         font-size: 14px;
