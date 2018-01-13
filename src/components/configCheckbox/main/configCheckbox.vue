@@ -1,7 +1,7 @@
 <template type="html">
 <el-dialog
   class="dialogNoServer"
-  title="选区"
+  :title="title"
   custom-class="dialogNoServerWidth"
   :visible.sync="internalVisible"
   @close="dialogClose"
@@ -13,7 +13,7 @@
   >
     <el-col :span="internalLevels == 1?24:internalLevels==2?12:6">
       <li class="commonli-class li-title">
-        省份
+        {{subTitle[0]||" "}}
       </li>
       <ul
         class="ul-block"
@@ -23,7 +23,7 @@
           <label
             v-if='(item.check)&&onlyRead||!onlyRead'
             :class="[index ==li0 ?'activeClass':'','commonli-class']"
-            @click="handleLevel1Click($event,index,item)"
+            @click.stop="handleLevel1Click($event,index,item)"
             v-for="(item,index) in sourceData.leveloneArray"
             :for="item.leveloneValue"
           >
@@ -44,40 +44,51 @@
       :span="internalLevels ==2?12:9"
       v-if="internalLevels>=2"
     >
-      <li class="commonli-class li-title">城市</li>
+      <li class="commonli-class li-title"> {{subTitle[1]||" "}}</li>
       <ul class="ul-block">
         <el-collapse-transition>
           <div v-if="showLi">
             <checkbox-group v-model="checkCity">
               <li
                 v-if='((item.check|| (internalLevels>2&&item.levelthreeArray.some(function(im){ return im.check>0})) )&&onlyRead)||!onlyRead'
-                :class="[index==li1?activeClass:'', 'commonli-class']"
+                :class="[index==li1&&internalLevels>2?activeClass:'', 'commonli-class']"
                 @click="handleLevel2Click($event,item,index)"
                 v-for="(item,index) in list2"
                 :key="index"
                 style="position:relative"
               >
                 <span class="city-span">{{item.leveltwovalue}}</span>
-                <checkbox
-                  v-for="(itm,idx) in tips"
-                  v-if="!onlyRead"
-                  class="checkbox-common"
-                  :label="item.leveltwovalue+itm"
-                  :key="item.leveltwovalue+itm"
-                  @change="handleCheckAllChange(index,item,$event,idx+1)"
+                <span
+                  style="display:inline-block;width:100px;text-align:left"
+                  v-if="onlyRead&&item.check%2===1&&tips[0]&&internalLevels ===2"
                 >
-                  {{itm}}
-                  </checkbox>
+                  <el-tag
+                    type="primary"
+                    v-if="onlyRead&&item.check%2===1&&tips[0]&&internalLevels ===2"
+                  >{{tips[0]}}</el-tag>
+                    <el-tag
+                      type="primary"
+                      v-if="onlyRead&&item.check>1&&tips[1]&&internalLevels ===2"
+                    >{{tips[1]}}</el-tag>
+                      </span>
+                      <checkbox
+                        v-for="(itm,idx) in tips"
+                        v-if="!onlyRead"
+                        :label="item.leveltwovalue+itm"
+                        :key="item.leveltwovalue+itm"
+                        @change="handleCheckAllChange(index,item,$event,idx+1)"
+                      >
+                        {{itm}}
+                        </checkbox>
 
-                  <checkbox
-                    v-if="!onlyRead&&tips.length == 0"
-                    class="checkbox-common"
-                    :label="item.leveltwovalue"
-                    :key="item.leveltwovalue"
-                    @change="handleCheckAllChange(index,item,$event,1)"
-                  >
-                    </checkbox>
-                    </li>
+                        <checkbox
+                          v-if="!onlyRead&&tips.length == 0"
+                          :label="item.leveltwovalue"
+                          :key="item.leveltwovalue"
+                          @change="handleCheckAllChange(index,item,$event,1)"
+                        >
+                          </checkbox>
+                          </li>
             </checkbox-group>
           </div>
         </el-collapse-transition>
@@ -87,7 +98,7 @@
         :span="9"
         v-if="internalLevels >=3"
       >
-        <li class="commonli-class li-title">区县</li>
+        <li class="commonli-class li-title">{{subTitle[2]||" "}}</li>
         <ul class="ul-block">
           <el-collapse-transition>
             <div v-if="showLi2">
@@ -128,13 +139,22 @@
                           v-if="onlyRead"
                           class="levels3-class"
                         >{{item.levelthreeValue}}</span>
-                          <span style="display:inline-block;width:100px;text-align:left">
-                  <el-tag  type="primary" v-if="onlyRead&&item.check%2===1&&tips[0]" >{{tips[0]}}</el-tag>
-                  <el-tag  type="primary" v-if="onlyRead&&item.check>1&&tips[1]" >{{tips[1]}}</el-tag>
-                </span>
+                          <span
+                            style="display:inline-block;width:100px;text-align:left"
+                            v-if="onlyRead&&item.check%2===1&&tips[0]"
+                          >
+                            <el-tag
+                              type="primary"
+                              v-if="onlyRead&&item.check%2===1&&tips[0]"
+                            >{{tips[0]}}</el-tag>
+                              <el-tag
+                                type="primary"
+                                v-if="onlyRead&&item.check>1&&tips[1]"
+                              >{{tips[1]}}</el-tag>
+                                </span>
 
-                          </li>
-                          </checkbox-group>
+                                </li>
+                                </checkbox-group>
             </div>
           </el-collapse-transition>
         </ul>
@@ -168,9 +188,12 @@ export default {
   },
   props: {
     visible: Boolean,
-
+    title: String,
+    subTitle: {
+      type: Array,
+      default: ["", "", ""]
+    },
     sourceData: Object,
-
     onlyRead: {
       type: Boolean,
       default: true
@@ -587,7 +610,10 @@ export default {
         font-weight: bold;
     }
     .commonli-class {
-        display: block;
+        // display: block;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         text-align: center;
         list-style: none;
         font-size: 14px;
@@ -600,6 +626,7 @@ export default {
         line-height: 1;
         cursor: pointer;
         .city-span {
+            float: left;
             margin-right: 0;
             display: inline-block;
             margin-top: 3px;
@@ -624,7 +651,7 @@ export default {
         .levels3-class {
             display: inline-block;
             width: 110px;
-            text-align: right;
+            text-align: center;
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;

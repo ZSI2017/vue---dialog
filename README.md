@@ -7,9 +7,10 @@
 -  [mock.js](http://mockjs.com/) 伪造数据
 -  [Element-ui](http://element.eleme.io/#/zh-CN/component/message-box) 样式渲染
 -  [vue-cli] 搭建脚手架
+-  [axios] 请求数据
 -  使用自定义插件，
 
-**使用说明:**
+**示例 使用说明:**
   - 全局安装`json-server`插件   `npm i json-server -g`
   - `cd mock` 目录，启动服务  `json-server -w mock.js`
   - `cd ..` 在 最外层目录， `npm run dev` 启动
@@ -31,6 +32,7 @@
            check:0
            }
       ]
+
      ```
    - 二级选择器
      ```
@@ -46,6 +48,7 @@
                }]
        }
     ]
+
      ```
    - 三级选择器
      ```
@@ -81,6 +84,7 @@
              }]
        }
     ]
+
      ```
 
  **如果配置了 三级level中 配置了 区分两种条件 进行选中，即使用了 attribute 中的 tips 数组,check 字段的含义也相应变化。**
@@ -141,6 +145,8 @@
 
 参数   |   类型 |   说明 | 默认值
 -----  |------ |-----  |  ----
+title   |String | 定义级联对话框的标题|
+subTitle | Array | 定义每一列的子标题|
 visible|boolean|是否显示对话框|false
 sourceData|Array|级联对话框中的数据源|
 onlyRead | boolean| 是否以只读形式(查看形式)，显示级联对话框| true
