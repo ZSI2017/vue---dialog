@@ -1,10 +1,14 @@
 <template>
 <div
   class="hello"
-  @listenToConfig="changeConfigVisible"
 >
+<!-- @listenToConfig="changeConfigVisible" -->
   <h1>{{ msg }}</h1>
 
+  <el-input placeholder="实收总金额"  v-model="sum"></el-input>
+
+<el-input placeholder="实收金额1" v-model="add1"></el-input>
+<el-input placeholder="实收金额2" v-model="add2"></el-input>
   <el-select
     v-model="selectValue"
     placeholder="多级联动"
@@ -69,10 +73,14 @@
                   :onlyRead='isCheckServer'
                   :levels="defaultLevals"
                   :tips="tipArray"
-                  @listenToConfig="changeConfigVisible"
+                  @listenToConfig="changeConfigVisible($event,2)"
                 >
                   </config-checkbox>
                   </div>
+
+
+
+
 </template>
 
 <script>
@@ -82,6 +90,8 @@ export default {
   componentName: 'HelloWorld',
   data() {
     return {
+      add1:0,
+      add2:0,
       title: '选区',
       subTitle: ["省名", "城市", "地区"],
       defaultLevals: 1,
@@ -107,6 +117,11 @@ export default {
       inputValue: '',
       showNewTag: false
     }
+  },
+  computed:{
+    sum(){
+       return (parseFloat(this.add1) + parseFloat(this.add2))||0
+   }
   },
   mounted() {
     this.$http.get("/list1", (data) => {
@@ -145,7 +160,8 @@ export default {
       }
       this.defaultLevals = item;
     },
-    changeConfigVisible(flag) {
+    changeConfigVisible(flag,ages) {
+      console.log(ages)
       this.dialogConfigVisible = !!flag;
     },
     toggleSeeDialog() {
