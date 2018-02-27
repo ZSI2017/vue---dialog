@@ -4,11 +4,6 @@
 >
 <!-- @listenToConfig="changeConfigVisible" -->
   <h1>{{ msg }}</h1>
-
-  <el-input placeholder="实收总金额"  v-model="sum"></el-input>
-
-<el-input placeholder="实收金额1" v-model="add1"></el-input>
-<el-input placeholder="实收金额2" v-model="add2"></el-input>
   <el-select
     v-model="selectValue"
     placeholder="多级联动"
@@ -90,8 +85,6 @@ export default {
   componentName: 'HelloWorld',
   data() {
     return {
-      add1:0,
-      add2:0,
       title: '选区',
       subTitle: ["省名", "城市", "地区"],
       defaultLevals: 1,
@@ -117,11 +110,6 @@ export default {
       inputValue: '',
       showNewTag: false
     }
-  },
-  computed:{
-    sum(){
-       return (parseFloat(this.add1) + parseFloat(this.add2))||0
-   }
   },
   mounted() {
     this.$http.get("/list1", (data) => {
